@@ -317,18 +317,14 @@ class Parse_JSIDL:
       raise Exception("JAUS MESSAGE should contain count_field!")
     string_prefix = "%s_%s" % (lua_var_prefix, element.value.name)
     count_str, data_string, count_type_len = self.parse_count_field(count_field, lua_var_prefix, filename, depth)
-    
-    result += LINE("local format_field_set = {%s}" % q_list, depth) 
     buffer_str = "buffer(bufidx, %d)" % (count_type_len)
-    result += LINE("local format_id, format_name = (format_field_set[%s:le_uint()])" % (buffer_str), depth)
-    result += LINE('%s_tree:add(%s, string.format("%s: %%d [%%s] -- (%s)", %s:le_uint(), format_id))' % (lua_var_prefix, buffer_str, name,count_type_len , buffer_str), depth)
-    
-    result += data_string
+    result += LINE("local format_field_set = {%s}" % q_list, depth)
+    result += LINE("local format_field_value = buffer(bufidx, 1):le_uint()", depth)
+    result += LINE("bufidx = bufidx + 1", depth)
+    result += LINE('%s_tree:add(%s, string.format("%s: %%s [%%s] -- (%%d)",format_field_value, format_field_set[format_field_value], buffer(bufidx, 2):le_uint()))' % (lua_var_prefix, buffer_str, name), depth)
+
     result += LINE('local %s_count = %s' % (lua_var_prefix, count_str), depth)
     result += LINE("bufidx = bufidx + %d" % (count_type_len), depth)
-    result += LINE('if %s_count > buffer:len() - bufidx then' % (lua_var_prefix), depth)
-    result += LINE('%s_count = buffer:len() - bufidx' % (lua_var_prefix), depth + 1)
-    result += LINE('end', depth)
     result += LINE('submsgid = buffer(bufidx, 2):le_uint()', depth)
     result += LINE('local subpacket_dissector = messagetable:get_dissector(submsgid)', depth)
     result += LINE('if subpacket_dissector ~= nil then', depth)
