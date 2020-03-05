@@ -97,6 +97,7 @@ class Parse_JSIDL:
         input_path = os.path.join(input_path, "jsidl")
         logging.info("Read from default jsidl input path: %s" % (input_path))
       else:
+        input_path = os.path.abspath(input_path)
         logging.info("Read jsidl files from: %s" % (input_path))
 
       # create a set with all xml files found in input_path

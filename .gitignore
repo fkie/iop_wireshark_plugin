@@ -28,4 +28,4 @@ generated/
 .vscode/
 *.code-workspace
 *build
-
+jsidl_pyxb/
