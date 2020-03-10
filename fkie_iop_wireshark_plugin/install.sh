@@ -33,5 +33,5 @@ touch $GEN_DIR/__init__.py
 
 echo "generate lua file from JSIDL files, write to: $WIRESHARK_PLUGIN_DIR/fkie_iop.lua"
 export PYTHONPATH="$PYTHONPATH:$PWD/$(dirname $GEN_DIR)/:$PWD/src/"
-python scripts/run_parser.py --input_path $JSIDL_DIR --output_path $WIRESHARK_PLUGIN_DIR/fkie_iop.lua --exclude urn.jaus.jss.core-v1.0
+python scripts/iop_create_dissector.py --input_path $JSIDL_DIR --output_path $WIRESHARK_PLUGIN_DIR/fkie_iop.lua --exclude urn.jaus.jss.core-v1.0
 

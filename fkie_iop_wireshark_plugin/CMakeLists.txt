@@ -21,6 +21,6 @@ install(
 
 install(
     PROGRAMS 
-        scripts/run_parser.py
+        scripts/iop_create_dissector.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

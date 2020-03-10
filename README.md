@@ -45,7 +45,7 @@ Use setup.py to install the code:
   python setup.py install --user --record installed_files.txt
   ```
 
-  The executable **run_parser.py** is now located in `~/.local/bin`.
+  The executable **iop_create_dissector.py** is now located in `~/.local/bin`.
 
   **Note:** to remove installed files call
 
@@ -55,18 +55,18 @@ Use setup.py to install the code:
 
 ## Generate wireshark plugin
 
-Run **run_parser.py** to generate the Lua script.
+Run **iop_create_dissector.py** to generate the Lua script.
 
 In ROS environment you can do it by
 
 ```console
-rosrun fkie_iop_node_manager run_parser.py
+rosrun fkie_iop_node_manager iop_create_dissector.py
 ```
 
 otherwise
 
 ```console
-python ~/.local/bin/run_parser.py
+python ~/.local/bin/iop_create_dissector.py
 ```
 
 If no path for JSIDL files is given the script tries to find the `fkie_iop_builder` ROS package from [ROS/IOP Bridge][ros_iop_bridge]. If path not found only dissector for IOP header will be generated. You can change this path with `--input_path`.
@@ -76,7 +76,7 @@ By default, the plugin is written to the file `~/.local/lib/wireshark/plugins/fk
 You can exclude subfolder from parsing if they contain different versions of the same message, e.g.
 
 ```console
-rosrun fkie_iop_wireshark_plugin run_parser.py --exclude urn.jaus.jss.core-v1.0
+rosrun fkie_iop_wireshark_plugin iop_create_dissector.py --exclude urn.jaus.jss.core-v1.0
 ```
 
 ## Usage

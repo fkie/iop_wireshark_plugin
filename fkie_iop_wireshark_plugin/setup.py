@@ -4,7 +4,7 @@ from distutils.core import setup
 from distutils.command.build_py import build_py
 
 package_name = "fkie_iop_wireshark_plugin"
-scripts=['scripts/run_parser.py']
+scripts=['scripts/iop_create_dissector.py']
 packages=[package_name]
 package_dir={'': 'src'}
 
