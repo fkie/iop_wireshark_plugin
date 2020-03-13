@@ -121,11 +121,11 @@ class Parse_JSIDL:
         current_idx += 1
         logging.debug("Parse [%d/%d]: %s" % (current_idx, len(self.xml_files), xmlfile))
         self.parse_jsidl_file(xmlfile)
-      logging.info("%d messages found" % self._message_count)
+      logging.info("%d message types found" % self._message_count)
       if self._message_failed:
-        logging.warning("Parse errors in %d messages: \n\t%s" % (len(self._message_failed), '\n\t'.join(["%s: %s" % (msgname, fname) for msgname, fname in self._message_failed])))
+        logging.warning("Parse errors in %d message types: \n\t%s" % (len(self._message_failed), '\n\t'.join(["%s: %s" % (msgname, fname) for msgname, fname in self._message_failed])))
       if self._message_doubles:
-        logging.warning("Skipped %d messages, their name was already been parsed. See warnings for details!" % (len(self._message_doubles)))
+        logging.warning("Skipped %d message types, their name was already been parsed. See warnings for details!" % (len(self._message_doubles)))
 
   def parse_jsidl_file(self, filename):
     js = self._get_doc(filename)
