@@ -10,23 +10,23 @@ This package contains no JSIDL files. You can find such files in [JausToolsSet][
 
 ## Install wireshark plugin
 
-Install dependency *python-pyxb*. We use [PyXB][pyxb] to generate python code for XMLSchema of JSIDL.
+We use [PyXB][pyxb] to generate python code for XMLSchema of JSIDL. Install dependencies:
+```console
+sudo apt install python3-pyxb -y
+```
 
-  ```console
-  sudo apt install python-pyxb -y
-  ```
+For using as ROS package you need additionally
+```console
+sudo apt install python3-catkin-pkg -y
+```
+**Note**: for use with python2 replace python3 with python.
 
-or
-
-  ```console
-  pip install PyXB --user
-  ```
 
 Clone this repository to your preffered destination.
 
-  ```console
-  git clone https://github.com/fkie/iop_wireshark_plugin
-  ```
+```console
+git clone https://github.com/fkie/iop_wireshark_plugin
+```
 
 ### As ROS package inside ROS environment
 
@@ -42,7 +42,7 @@ Use setup.py to install the code:
 
   ```console
   cd iop_wireshark_plugin/fkie_iop_wireshark_plugin
-  python setup.py install --user --record installed_files.txt
+  python3 setup.py install --user --record installed_files.txt
   ```
 
   The executable **iop_create_dissector.py** is now located in `~/.local/bin`.
@@ -66,7 +66,7 @@ rosrun fkie_iop_node_manager iop_create_dissector.py
 otherwise
 
 ```console
-python ~/.local/bin/iop_create_dissector.py
+python3 ~/.local/bin/iop_create_dissector.py
 ```
 
 If no path for JSIDL files is given the script tries to find the `fkie_iop_builder` ROS package from [ROS/IOP Bridge][ros_iop_bridge]. If path not found only dissector for IOP header will be generated. You can change this path with `--input_path`.

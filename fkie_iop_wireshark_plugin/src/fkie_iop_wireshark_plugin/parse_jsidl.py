@@ -20,11 +20,11 @@
 
 from __future__ import division, absolute_import, print_function, unicode_literals
 
-import sys
-import os
 import errno
 import fnmatch
+import os
 import re
+import sys
 
 try:
   import jsidl_pyxb.jsidl as jsidl
@@ -77,7 +77,7 @@ class Parse_JSIDL:
   def __init__(self, input_path=None, output_path=None, exclude=[]):
     if output_path is None:
       output_path = os.path.expanduser("~/.local/lib/wireshark/plugins/fkie_iop.lua")
-      logging.info("Write lua to default path: %s%s" % (output_path, os.getcwd()))
+      logging.info("Write lua to default path: %s" % (output_path))
     else:
       logging.info("Write lua to: %s" % (output_path))
     try:
@@ -126,6 +126,7 @@ class Parse_JSIDL:
         logging.warning("Parse errors in %d message types: \n\t%s" % (len(self._message_failed), '\n\t'.join(["%s: %s" % (msgname, fname) for msgname, fname in self._message_failed])))
       if self._message_doubles:
         logging.warning("Skipped %d message types, their name was already been parsed. See warnings for details!" % (len(self._message_doubles)))
+      logging.info("Wireshark plugin was written to: %s" % (output_path))
 
   def parse_jsidl_file(self, filename):
     js = self._get_doc(filename)
@@ -141,19 +142,24 @@ class Parse_JSIDL:
       try:
         logging.debug("--- MESSAGE %d/%d  ---  FILE %s ---" % (counter + 1, len(js.message_def), filename))
         jsmsg = js.message_def[counter]
-        dissector_name = "%s_%s" % (jsmsg.name.lower(), jsmsg.message_id.encode('hex'))
+        msg_id_hex = ''
+        if sys.version_info[0] > 2:
+          msg_id_hex = jsmsg.message_id.hex()
+        else:
+          msg_id_hex = jsmsg.message_id.encode('hex')
+        dissector_name = "%s_%s" % (jsmsg.name.lower(), msg_id_hex)
         if jsmsg.message_id in self._message_ids:
-          self._message_doubles.append("%s(%s)" % (jsmsg.name, jsmsg.message_id.encode('hex')))
-          logging.warning("skip message with already parsed message ID: %s, msg_id: %s,\n  file: %s,\n  first found in %s" %(jsmsg.name, jsmsg.message_id.encode('hex'), filename, self._message_ids[jsmsg.message_id]))
+          self._message_doubles.append("%s(%s)" % (jsmsg.name, msg_id_hex))
+          logging.warning("skip message with already parsed message ID: %s, msg_id: %s,\n  file: %s,\n  first found in %s" %(jsmsg.name, msg_id_hex, filename, self._message_ids[jsmsg.message_id]))
           continue
         self._not_parsed = []
         self._current_msg_name = jsmsg.name
         self._message_ids[jsmsg.message_id] = filename
-        logging.debug("Parse message: %s, msg_id: %s" %(jsmsg.name, jsmsg.message_id.encode('hex')))
+        logging.debug("Parse message: %s, msg_id: %s" %(jsmsg.name, msg_id_hex))
         self._message_count += 1
         
 
-        self.data_string = LINE('%s = Proto("%s", "%s 0x%s")' % (dissector_name, dissector_name, jsmsg.name, jsmsg.message_id.encode('hex')), 0)
+        self.data_string = LINE('%s = Proto("%s", "%s 0x%s")' % (dissector_name, dissector_name, jsmsg.name, msg_id_hex), 0)
         self.data_string += LINE("function %s.dissector(buffer, pinfo, tree)" % dissector_name, 0)
         self.data_string += LINE("-- %s" % filename, 1)
         self.data_string += LINE("local bufidx = 0", 1)
@@ -172,7 +178,7 @@ class Parse_JSIDL:
           self.data_string += LINE('local not_parsed_tree = tree_msg:add_expert_info(PI_UNDECODED, PI_WARN, "this message contains fields not included into this dissector %s. Field values could be wrong!")' % str(self._not_parsed), 1)
         # close dissector
         self.data_string += LINE("end", 0)
-        self.data_string += LINE("messagetable:add(0x%s, %s)\n" % (((jsmsg.message_id).encode('hex')).upper(), dissector_name), 0)
+        self.data_string += LINE("messagetable:add(0x%s, %s)\n" % (msg_id_hex.upper(), dissector_name), 0)
         # write into the file only if no Exception occurs
         self.lua_file.write(self.data_string)
       except Exception:
