@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(fkie_iop_wireshark_plugin)
 
 find_package(catkin REQUIRED COMPONENTS rospy)
@@ -19,7 +19,7 @@ install(
    DESTINATION ${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
 
-install(
+catkin_install_python(
     PROGRAMS 
         scripts/iop_create_dissector.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
