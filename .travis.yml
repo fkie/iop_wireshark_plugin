@@ -81,7 +81,8 @@ before_install:
   - sudo apt-get install gcc --only-upgrade
   - sudo apt-get install -y $PY_PRFX-catkin-pkg $PY_PRFX-rosdep $PY_PRFX-wstool ros-$ROS_DISTRO-ros-base
   # install pyxb dependency, not available for ubuntu 20.04 as debian package
-  - PY_PRFX -m pip install pyxb
+  - sudo apt-get install -y $PY_PRFX-pip
+  - $PY_PRFX -m pip install pyxb
   - source /opt/ros/$ROS_DISTRO/setup.bash
   # Prepare rosdep to install dependencies.
   - sudo rosdep init
