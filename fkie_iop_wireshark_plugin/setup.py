@@ -24,7 +24,7 @@ try:
                   pyxbgen_exec = 'pyxbgen-py'
                result = os.system('%s -u %s --schema-root=%s --binding-root=src --module-prefix=%s -m jsidl' % (pyxbgen_exec, xsd_file, schema_dir, '%s.%s' % (package_name, 'jsidl_pyxb')))
                if result != 0:
-                  raise SystemError('error while execute pybgen\n')
+                  raise SystemError('error while execute pyxbgen\n')
          # run base class code
          super(BuildPyCommand, self).run()
 
