@@ -21,6 +21,11 @@ sudo apt install python3-catkin-pkg -y
 ```
 **Note**: for use with python2 replace python3 with python.
 
+**Note**: for use in Ubuntu 20.04 with python3 install with pip:
+```
+python3 -m pip install -U pyxb
+export PATH=$PATH:~/.local/bin/
+```
 
 Clone this repository to your preffered destination.
 
