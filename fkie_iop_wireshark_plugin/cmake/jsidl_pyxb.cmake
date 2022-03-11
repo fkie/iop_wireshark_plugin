@@ -1,7 +1,7 @@
 include(CMakeParseArguments)
 
 macro(generate_jsidl_pyxb)
-    find_program(PYXBGEN_BIN pyxbgen pyxbgen-py3)
+    find_program(PYXBGEN_BIN pyxbgen pyxbgen-py3 .local/bin/pyxbgen pyxbgen)
     set(PYXB_GENERATED_SRC_DIR "${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_PYTHON_DESTINATION}")
     get_filename_component(PYXB_GENERATED_SRC_DIR "${PYXB_GENERATED_SRC_DIR}" PATH)
     # set(PYXB_GENERATED_SRC_DIR "${PROJECT_SOURCE_DIR}/src/${PROJECT_NAME}")

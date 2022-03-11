@@ -65,7 +65,7 @@ Run **iop_create_dissector.py** to generate the Lua script.
 In ROS environment you can do it by
 
 ```console
-rosrun fkie_iop_node_manager iop_create_dissector.py
+rosrun fkie_iop_wireshark_plugin iop_create_dissector.py
 ```
 
 otherwise
