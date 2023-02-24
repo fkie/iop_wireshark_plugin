@@ -234,6 +234,8 @@ class Parse_JSIDL:
       result_str += self.parse_variable_format_field(element, lua_var_prefix, filename, depth)
     elif elname == "declared_variable_length_string":
       result_str += self.parse_declared_variable_length_string(element, lua_var_prefix, filename, depth)
+    elif elname == "variable_field":
+      result_str += self.parse_variable_field(element, lua_var_prefix, filename, depth)
     else:
       logging.info("skipped '%s' -- no parser implemented, message: %s, file: %s" % (elname, self._current_msg_name, filename))
       self._not_parsed.append(elname)
@@ -527,6 +529,39 @@ class Parse_JSIDL:
   def parse_declared_variable_length_string(self, element, lua_var_prefix, filename, depth=1):
     js, infile = self._resolve_type_ref(element.value.declared_type_ref, "variable_length_string", filename)
     return self.parse_variable_length_string(js, lua_var_prefix, infile, depth, element.value.name, self.get_comment(element))
+
+  def parse_variable_field(self, element, lua_var_prefix, filename, depth=1, list_index_str=''):
+    result = ""
+    name = self.get_name(element)
+    comment = self.get_comment(element)
+
+    for rc in element.value.orderedContent():
+      if rc.elementDeclaration.name().localName() != "type_and_units_field":
+        logging.warning("Skipped unexpected child '%s' for variable_field in %s!" % (rc.elementDeclaration.name().localName(), filename))
+      else:
+        types_list = []
+        unit_list = []
+        field_len_dict = {}
+        for val in rc.value.orderedContent():
+          if val.elementDeclaration.name().localName() == "type_and_units_enum":
+            types_list.append((val.value.index, self.get_field_type_length(val.value.field_type)))
+            unit_list.append((val.value.index, val.value.field_units))
+            field_len_dict[int(val.value.index)] = self.get_field_type_length(val.value.field_type)
+            # todo: add scale or value set
+          else:
+            logging.warning("Skipped unexpected child '%s' for type_and_units_field in %s!" % (val.elementDeclaration.name().localName(), filename))
+        types_list_str = ', '.join(['[%d] = %d' % (tl[0], tl[1]) for tl in types_list])
+        unit_list_str = ', '.join(['[%d] = "%s"' % (ul[0], ul[1]) for ul in unit_list])
+        result += LINE("local types_set = {%s}" % types_list_str, depth)
+        result += LINE("local unit_set = {%s}" % unit_list_str, depth)
+        result += LINE("local type_value = buffer(bufidx, 1):le_uint()", depth)
+        result += LINE("-- increase index for type_and_units_field", depth)
+        result += LINE("bufidx = bufidx + 1", depth)
+        result += LINE("local value = buffer(bufidx, types_list(type_value)):le_uint()", depth)
+        result += LINE("-- increase index for contained type", depth)
+        result += LINE("bufidx = bufidx + types_list(type_value)", depth)
+        result += LINE('%s_tree:add(%s, string.format("%%s: %%d", unit_list(type_value), value))' % (lua_var_prefix, name), depth)
+    return result
 
   def parse_scale_range(self, element, q_type_length, lua_var_prefix, filename, depth):
     bias = self._to_float(element.value.real_lower_limit, filename)
