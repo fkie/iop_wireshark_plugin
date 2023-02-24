@@ -130,18 +130,30 @@ class Parse_JSIDL:
 
   def parse_jsidl_file(self, filename):
     js = self._get_doc(filename)
-    if not hasattr(js, 'message_def'):
-      logging.debug("No 'message_def' found!")
-      return
     self.dirname = os.path.dirname(filename)
     logging.debug("current directory: %s" % self.dirname)
+    found_message_def = False
+    if hasattr(js, 'message_def'):
+      found_message_def = True
+      self._parse_jsidl_message_def(filename, js.message_def)
+    if hasattr(js, 'message_set'):
+      if hasattr(js.message_set, 'input_set'):
+        if hasattr(js.message_set.input_set, 'message_def'):
+          found_message_def = True
+          self._parse_jsidl_message_def(filename, js.message_set.input_set.message_def)
+      if hasattr(js.message_set, 'output_set'):
+        if hasattr(js.message_set.output_set, 'message_def'):
+          found_message_def = True
+          self._parse_jsidl_message_def(filename, js.message_set.output_set.message_def)
+    if not found_message_def:
+      logging.debug(f"No 'message_def' or 'message_set' in {filename} found!")
 
     # parse message definitions
-   
-    for counter in range(len(js.message_def)):
+  def _parse_jsidl_message_def(self, filename, message_def):
+    for counter in range(len(message_def)):
       try:
-        logging.debug("--- MESSAGE %d/%d  ---  FILE %s ---" % (counter + 1, len(js.message_def), filename))
-        jsmsg = js.message_def[counter]
+        logging.debug("--- MESSAGE %d/%d  ---  FILE %s ---" % (counter + 1, len(message_def), filename))
+        jsmsg = message_def[counter]
         msg_id_hex = ''
         if sys.version_info[0] > 2:
           msg_id_hex = jsmsg.message_id.hex()
