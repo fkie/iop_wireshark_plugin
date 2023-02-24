@@ -10,7 +10,7 @@
   2. Added mxCell element and sub-elements
   3. Updated variable_field to define type_and_units_field inline because defining it separately causes problems in the XSD. 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:jaus:jsidl:1.1" xmlns:ns1="urn:jaus:jsidl:1.1" xmlns:plus="urn:jaus:jsidl:plus" xmlns:ns0="urn:jaus:jsidl:1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:jaus:jsidl:1.0" xmlns:ns1="urn:jaus:jsidl:1.0" xmlns:plus="urn:jaus:jsidl:plus" xmlns:ns2="urn:jaus:jsidl:1.1">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
   <xs:import namespace="urn:jaus:jsidl:plus" schemaLocation="plus.xsd"/>
   <xs:element name="service_def">
@@ -971,7 +971,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" ref="ns1:guard"/>
         <xs:choice>
-          <xs:element ref="ns1:internal"/>
+          <xs:element ref="ns2:internal"/>
           <xs:element ref="ns1:simple"/>
           <xs:element ref="ns1:push"/>
           <xs:element ref="ns1:pop"/>
@@ -1009,7 +1009,7 @@
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="ns1:parameter"/>
         <xs:element minOccurs="0" ref="ns1:guard"/>
         <xs:choice>
-          <xs:element ref="ns1:internal"/>
+          <xs:element ref="ns2:internal"/>
           <xs:element ref="ns1:simple"/>
           <xs:element ref="ns1:push"/>
           <xs:element ref="ns1:pop"/>

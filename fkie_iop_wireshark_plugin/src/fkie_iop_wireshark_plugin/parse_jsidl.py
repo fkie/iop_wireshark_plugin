@@ -26,12 +26,6 @@ import os
 import re
 import sys
 
-try:
-  import jsidl_pyxb.jsidl as jsidl
-except ImportError:
-  # try ROS environment
-  import fkie_iop_wireshark_plugin.jsidl_pyxb.jsidl as jsidl
-
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -696,9 +690,19 @@ class Parse_JSIDL:
     try:
       return self.doc_files[path]
     except KeyError:
-      with open(path) as f:
-        data = f.read()
-        jsdoc = jsidl.CreateFromDocument(data)
-        self.doc_files[path] = jsdoc
-        return jsdoc
+      try:
+        import jsidl_pyxb.jsidl as jsidl
+      except (ImportError, ModuleNotFoundError):
+        # try ROS environment
+        import fkie_iop_wireshark_plugin.jsidl_pyxb.jsidl as jsidl
+      try:
+        with open(path) as f:
+          data = f.read()
+          jsdoc = jsidl.CreateFromDocument(data)
+          self.doc_files[path] = jsdoc
+          return jsdoc
+      except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        raise e
     return None

@@ -29,3 +29,4 @@ generated/
 *.code-workspace
 *build
 jsidl_pyxb/
+installed_files.txt
