@@ -541,26 +541,66 @@ class Parse_JSIDL:
       else:
         types_list = []
         unit_list = []
-        field_len_dict = {}
+        value_set_list = []
+        scale_factor_list = []
+        scale_bias_list = []
         for val in rc.value.orderedContent():
           if val.elementDeclaration.name().localName() == "type_and_units_enum":
-            types_list.append((val.value.index, self.get_field_type_length(val.value.field_type)))
+            q_type_length = self.get_field_type_length(val.value.field_type)
+            types_list.append((val.value.index, q_type_length))
             unit_list.append((val.value.index, val.value.field_units))
-            field_len_dict[int(val.value.index)] = self.get_field_type_length(val.value.field_type)
             # todo: add scale or value set
+            value_set = ''
+            scale_factor = bias = None
+            for valset in val.value.orderedContent():
+              if valset.elementDeclaration.name().localName() == "value_set":
+                value_set = self.parse_value_set(valset, depth)
+              elif valset.elementDeclaration.name().localName() == "scale_range":
+                scale_factor, bias = self.parse_scale_range(valset, q_type_length, lua_var_prefix, filename, depth)
+            if value_set:
+              value_set_list.append((val.value.index, value_set))
+            elif scale_factor is not None:
+              scale_factor_list.append((val.value.index, scale_factor))
+              scale_bias_list.append((val.value.index, bias))
           else:
             logging.warning("Skipped unexpected child '%s' for type_and_units_field in %s!" % (val.elementDeclaration.name().localName(), filename))
+
+
+
         types_list_str = ', '.join(['[%d] = %d' % (tl[0], tl[1]) for tl in types_list])
         unit_list_str = ', '.join(['[%d] = "%s"' % (ul[0], ul[1]) for ul in unit_list])
+        value_set_list_str = ', '.join(['[%d] = %d' % (vsl[0], vsl[1]) for vsl in value_set_list])
+        scale_factor_list_str = ', '.join(['[%d] = %d' % (sfl[0], sfl[1]) for sfl in scale_factor_list])
+        scale_bias_list_str = ', '.join(['[%d] = %d' % (sbl[0], sbl[1]) for sbl in scale_bias_list])
         result += LINE("local types_set = {%s}" % types_list_str, depth)
         result += LINE("local unit_set = {%s}" % unit_list_str, depth)
         result += LINE("local type_value = buffer(bufidx, 1):le_uint()", depth)
+        result += LINE("local value = buffer(bufidx+1, types_list(type_value)):le_uint()", depth)
+        result += LINE("-- check for value_set or scale options", depth)
+        result += LINE("local value_set_tabe = {%s}" % value_set_list_str, depth)
+        result += LINE("local scale_set_tabe = {%s}" % scale_factor_list_str, depth)
+        result += LINE("local bias_set_tabe = {%s}" % scale_bias_list_str, depth)
+        result += LINE("local value_set = value_set_tabe(type_value)", depth)
+        result += LINE("local scale = scale_set_tabe(type_value)", depth)
+        result += LINE("local bias = bias_set_tabe(type_value)", depth)
+        result += LINE("if (value_set ~= nil) then", depth)
+        result += LINE("-- value_set: NOT implemented", depth+1)
+        # result += value_set
+        # result += LINE("local value_id, value_name = (value_set[%s:le_uint()])" % (buffer_str), depth)
+        # result += LINE('%s_tree:add(%s, string.format("%s: %%d [%%s] -- (%s)", %s:le_uint(), value_id))' % (lua_var_prefix, buffer_str, name, element.value.field_type, buffer_str), depth)
+        result += LINE('local %s_tree = %s_tree:add(buffer(bufidx+1, types_list(type_value)), string.format("%s: %%d %%s (VALUE_SET defined, but interpreted)", value, unit_list(type_value)))' % (name, lua_var_prefix, name), depth+1)
+        result += LINE('%s_tree:add(buffer(bufidx, 1), string.format("index: %%d", type_value))' % (name), depth+1)
+        result += LINE("elseif (scale ~= nil) then", depth)
+        result += LINE('local %s_tree = %s_tree:add(buffer(bufidx+1, types_list(type_value)), string.format("%s: %%.4f (scaled) %%s", value * scale + bias, unit_list(type_value)))' % (name, lua_var_prefix, name), depth+1)
+        result += LINE('%s_tree:add(buffer(bufidx, 1), string.format("index: %%d", type_value))' % (name), depth+1)
+        result += LINE("else", depth)
+        result += LINE('local %s_tree = %s_tree:add(buffer(bufidx+1, types_list(type_value)), string.format("%s: %%d %%s", value, unit_list(type_value)))' % (name, lua_var_prefix, name), depth+1)
+        result += LINE('%s_tree:add(buffer(bufidx, 1), string.format("index: %%d", type_value))' % (name), depth+1)
+        result += LINE("end", depth)
         result += LINE("-- increase index for type_and_units_field", depth)
         result += LINE("bufidx = bufidx + 1", depth)
-        result += LINE("local value = buffer(bufidx, types_list(type_value)):le_uint()", depth)
         result += LINE("-- increase index for contained type", depth)
         result += LINE("bufidx = bufidx + types_list(type_value)", depth)
-        result += LINE('%s_tree:add(%s, string.format("%%s: %%d", unit_list(type_value), value))' % (lua_var_prefix, name), depth)
     return result
 
   def parse_scale_range(self, element, q_type_length, lua_var_prefix, filename, depth):
