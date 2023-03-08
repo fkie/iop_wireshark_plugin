@@ -16,7 +16,7 @@ macro(generate_jsidl_pyxb)
         COMMENT "create directory for generated pyxb code: ${CMAKE_CURRENT_SOURCE_DIR}"
     )
     message(STATUS "destination for pyxb generated code: ${PYXB_GENERATED_SRC_DIR}")
-    set(ABS_XSD_FILE "${ABS_XSD_PATH}/jsidl_plus.xsd")
+    set(ABS_XSD_FILE "${ABS_XSD_PATH}/jsidl_plus_v0.xsd")
     set(ABS_GEN_FILE "${PYXB_GENERATED_SRC_DIR}/${PROJECT_NAME}/jsidl_pyxb/jsidl.py")
     message(STATUS "generate python code from ${ABS_XSD_FILE}")
     add_custom_command(
