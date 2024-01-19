@@ -10,26 +10,19 @@ This package contains no JSIDL files. You can find such files in [JausToolsSet][
 
 ## Install wireshark plugin
 
-We use [PyXB][pyxb] to generate python code for XMLSchema of JSIDL. Install dependencies:
-```console
-sudo apt install python3-pyxb -y
+We use [PyXB-X](https://github.com/renalreg/PyXB-X) to generate python code for XMLSchema of JSIDL. Install dependencies:
+```bash
+pip install PyXB-X
 ```
 
 For using as ROS package you need additionally
-```console
+```bash
 sudo apt install python3-catkin-pkg -y
 ```
-**Note**: for use with python2 replace python3 with python.
 
-**Note**: for use in Ubuntu 20.04 with python3 install with pip:
-```
-python3 -m pip install -U pyxb
-export PATH=$PATH:~/.local/bin/
-```
+Clone this repository to your preferred destination.
 
-Clone this repository to your preffered destination.
-
-```console
+```bash
 git clone https://github.com/fkie/iop_wireshark_plugin
 ```
 
@@ -37,7 +30,7 @@ git clone https://github.com/fkie/iop_wireshark_plugin
 
 If you use it with ROS put this repository into ROS workspace and call  
 
-  ```console
+  ```bash
   roscd && catkin build
   ```
 
@@ -45,7 +38,7 @@ If you use it with ROS put this repository into ROS workspace and call
 
 Use setup.py to install the code:
 
-  ```console
+  ```bash
   cd iop_wireshark_plugin/fkie_iop_wireshark_plugin
   python3 setup.py install --user --record installed_files.txt
   ```
@@ -54,7 +47,7 @@ Use setup.py to install the code:
 
   **Note:** to remove installed files call
 
-  ```console
+  ```bash
   xargs rm -rf < installed_files.txt
   ```
 
@@ -64,13 +57,13 @@ Run **iop_create_dissector.py** to generate the Lua script.
 
 In ROS environment you can do it by
 
-```console
+```bash
 rosrun fkie_iop_wireshark_plugin iop_create_dissector.py
 ```
 
 otherwise
 
-```console
+```bash
 python3 ~/.local/bin/iop_create_dissector.py
 ```
 
@@ -80,7 +73,7 @@ By default, the plugin is written to the file `~/.local/lib/wireshark/plugins/fk
 
 You can exclude subfolder from parsing if they contain different versions of the same message, e.g.
 
-```console
+```bash
 rosrun fkie_iop_wireshark_plugin iop_create_dissector.py --exclude urn.jaus.jss.core-v1.0
 ```
 

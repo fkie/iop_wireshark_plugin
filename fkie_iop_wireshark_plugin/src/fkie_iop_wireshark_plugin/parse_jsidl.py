@@ -686,7 +686,7 @@ class Parse_JSIDL:
           for xml_file in self._local_first_xml_files():
             ref_js = self._get_doc(xml_file)
             if ref_js.id == declared_id and ref_js.version == declared_vers:
-              logging.debug("found referenced type '%s v%s' in %s" % (declared_id, declared_vers, xml_file))
+              logging.debug("found referenced type for '%s' in '%s v%s', file: %s" % (tagname, declared_id, declared_vers, xml_file))
               inpath = xml_file
               break
           if ref_js is None:
