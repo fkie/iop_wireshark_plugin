@@ -1,5 +1,5 @@
 # only for python2, see README.md install instructions!
-command -v pyxbgen >/dev/null 2>&1 || { echo >&2 "pyxbgen required but it's not installed. install python-pyxb first.  Aborting."; exit 1; }
+command -v pyxbgen >/dev/null 2>&1 || { echo >&2 "pyxbgen required but it's not installed. install PyXB first: pip install PyXB-X.  Aborting."; exit 1; }
 
 DIR=$(dirname "$0")
 if [ "$DIR" != "." ]; then

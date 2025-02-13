@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-from distutils.core import setup
+from setuptools import setup
 from distutils.command.build_py import build_py
 
 package_name = 'fkie_iop_wireshark_plugin'
@@ -19,7 +19,7 @@ try:
                packages.append(package_name + '.jsidl_pyxb')
                # build directory should exists, create if not
                xsd_files = 'jsidl_plus_v0.xsd jsidl_plus.xsd'
-               pyxbgen_exec = 'pyxbgen-py3'
+               pyxbgen_exec = 'pyxbgen'
                if sys.version_info[0] < 3:
                   pyxbgen_exec = 'pyxbgen-py'
                result = os.system(f'{pyxbgen_exec} -u {xsd_files} --schema-root={schema_dir} --binding-root=src --module-prefix={package_name}.jsidl_pyxb -m jsidl')
@@ -32,7 +32,7 @@ try:
          # run base class code
          super(BuildPyCommand, self).run()
 
-   install_requires = ['python3-pyxb']
+   install_requires = ['PyXB-X']
    if sys.version_info[0] < 3:
       install_requires = ['python-pyxb']
 

@@ -40,7 +40,7 @@ Use setup.py to install the code:
 
   ```bash
   cd iop_wireshark_plugin/fkie_iop_wireshark_plugin
-  python3 setup.py install --user --record installed_files.txt
+  pip install .
   ```
 
   The executable **iop_create_dissector.py** is now located in `~/.local/bin`.
