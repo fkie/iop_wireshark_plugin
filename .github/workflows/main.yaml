@@ -8,8 +8,8 @@ jobs:
       matrix:
         env:
           - {ROS_DISTRO: noetic}
-      env:
-        UPSTREAM_WORKSPACE: 'github:renalreg/PyXB-X#master'
+    env:
+      UPSTREAM_WORKSPACE: 'github:renalreg/PyXB-X#master'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
