@@ -1,17 +1,21 @@
-name: noetic
+name: Noetic Build
+
+permissions:
+  contents: read
+  pull-requests: write
 
 on: [push, pull_request]
 
 jobs:
-  industrial_ci:
-    strategy:
-      matrix:
-        env:
-          - {ROS_DISTRO: noetic}
-    env:
-      UPSTREAM_WORKSPACE: 'github:renalreg/PyXB-X#master'
+  noetic:
     runs-on: ubuntu-latest
+    container:
+      image: ubuntu:focal
     steps:
-      - uses: actions/checkout@v2
-      - uses: 'ros-industrial/industrial_ci@master'
-        env: ${{matrix.env}}
+      - uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: noetic
+      - run: sudo pip install PyXB-X -v
+      - uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          target-ros1-distro: noetic
