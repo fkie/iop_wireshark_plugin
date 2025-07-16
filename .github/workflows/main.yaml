@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: sudo pip install PyXB-X --break-system-packages
-      - run: sudo pip uninstall PyXB-X --break-system-packages -y
+      - run: sudo pip install PyXB-X --break-system-packages -v
+      - run: sudo pip uninstall PyXB-X --break-system-packages -v -y
       - run: sudo pip install PyXB-X --break-system-packages
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{matrix.env}}
