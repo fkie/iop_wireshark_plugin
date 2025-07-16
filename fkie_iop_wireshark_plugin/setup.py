@@ -22,11 +22,11 @@ try:
                pyxbgen_exec = 'pyxbgen'
                if sys.version_info[0] < 3:
                   pyxbgen_exec = 'pyxbgen-py'
-               result = os.system(f'{pyxbgen_exec} -u {xsd_files} --schema-root={schema_dir} --binding-root=src --module-prefix={package_name}.jsidl_pyxb -m jsidl')
+               result = os.system(f'{pyxbgen_exec} -u {xsd_files} --schema-root={schema_dir} --binding-root=. --module-prefix={package_name}.jsidl_pyxb -m jsidl')
                if result != 0:
                   print(f'{pyxbgen_exec} not found, try with pyxbgen...')
                   pyxbgen_exec = 'pyxbgen'
-                  result = os.system(f'{pyxbgen_exec} -u {xsd_files} --schema-root={schema_dir} --binding-root=src --module-prefix={package_name}.jsidl_pyxb -m jsidl')
+                  result = os.system(f'{pyxbgen_exec} -u {xsd_files} --schema-root={schema_dir} --binding-root=. --module-prefix={package_name}.jsidl_pyxb -m jsidl')
                   if result != 0:
                      raise SystemError('error while execute pyxbgen\n')
          # run base class code

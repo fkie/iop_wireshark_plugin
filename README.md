@@ -15,11 +15,6 @@ We use [PyXB-X](https://github.com/renalreg/PyXB-X) to generate python code for 
 pip install PyXB-X
 ```
 
-For using as ROS package you need additionally
-```bash
-sudo apt install python3-catkin-pkg -y
-```
-
 Clone this repository to your preferred destination.
 
 ```bash
@@ -31,7 +26,7 @@ git clone https://github.com/fkie/iop_wireshark_plugin
 If you use it with ROS put this repository into ROS workspace and call  
 
   ```bash
-  roscd && catkin build
+  colcon build --packages-up-to fkie_iop_wireshark_plugin
   ```
 
 ### As standalone package
@@ -40,7 +35,7 @@ Use setup.py to install the code:
 
   ```bash
   cd iop_wireshark_plugin/fkie_iop_wireshark_plugin
-  pip install .
+  pip install . --break-system-packages
   ```
 
   The executable **iop_create_dissector.py** is now located in `~/.local/bin`.
@@ -48,7 +43,7 @@ Use setup.py to install the code:
   **Note:** to remove installed files call
 
   ```bash
-  xargs rm -rf < installed_files.txt
+  pip uninstall fkie_iop_wireshark_plugin --break-system-packages
   ```
 
 ## Generate wireshark plugin
@@ -58,7 +53,7 @@ Run **iop_create_dissector.py** to generate the Lua script.
 In ROS environment you can do it by
 
 ```bash
-rosrun fkie_iop_wireshark_plugin iop_create_dissector.py
+ros2 run fkie_iop_wireshark_plugin iop_create_dissector.py
 ```
 
 otherwise
