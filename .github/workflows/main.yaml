@@ -1,4 +1,4 @@
-name: noetic
+name: jazzy
 
 on: [push, pull_request]
 
@@ -7,11 +7,10 @@ jobs:
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: noetic}
-    env:
-      UPSTREAM_WORKSPACE: 'github:renalreg/PyXB-X#master'
+          - {ROS_DISTRO: jazzy}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: sudo pip install PyXB-X --break-system-packages
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{matrix.env}}

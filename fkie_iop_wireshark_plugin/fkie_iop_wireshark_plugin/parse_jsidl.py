@@ -3,22 +3,29 @@
 # fkie_iop_wireshark_plugin
 # Copyright 2019 Fraunhofer FKIE
 # Author: Lukas Boes
+# Maintainer: Alexander Tiderko
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 #
 # ****************************************************************************
 
-from __future__ import division, absolute_import, print_function, unicode_literals
+from typing import List
 
 import errno
 import fnmatch
@@ -28,6 +35,21 @@ import sys
 
 import logging
 logging.basicConfig(level=logging.INFO)
+
+try:
+    from ament_index_python import get_resource
+    from ament_index_python import get_packages_with_prefixes
+    from ament_index_python.packages import get_package_share_directory
+    AMENT_SUPPORTED = True
+except ImportError:
+    AMENT_SUPPORTED = False
+
+try:
+    from catkin_pkg.package import parse_package
+    from catkin.find_in_workspaces import find_in_workspaces
+    CATKIN_SUPPORTED = True
+except ImportError:
+    CATKIN_SUPPORTED = False
 
 '''
 The main of the ROS node for jsdil parser
@@ -43,25 +65,38 @@ def LINE(line, depth):
 If ROS is installed tries to find the path to given ROS package.
 If it fails an empty string will be returned.
 '''
-def get_pkg_path(package_name):
-  _get_pkg_path_var = None
-  # try detect ROS package path
-  try:
-    try:
-        import rospkg
-        rp = rospkg.RosPack()
-        _get_pkg_path_var = rp.get_path
-    except ImportError:
-      try:
-        import roslib
-        _get_pkg_path_var = roslib.packages.get_pkg_dir
-      except ImportError:
-        pass
-    if _get_pkg_path_var is not None:
-      return _get_pkg_path_var(package_name)
-  except Exception:
-    pass
-  return ''
+def get_share_package(package_name: str) -> str:
+    """
+    Return the full path to a file in the share directory of a package.
+    For ROS2 functionality.
+
+    :raises: PackageNotFoundError if package is not found
+    :raises: FileNotFoundError if the file is not found in the package
+    :raises: MultipleLaunchFilesError if the file is found in multiple places
+    """
+    if AMENT_SUPPORTED:
+        package_share_directory = get_package_share_directory(package_name)
+        if package_share_directory:
+          return package_share_directory
+    elif CATKIN_SUPPORTED:
+        _get_pkg_path_var = None
+        # try detect ROS package path
+        try:
+          try:
+              import rospkg
+              rp = rospkg.RosPack()
+              _get_pkg_path_var = rp.get_path
+          except ImportError:
+            try:
+              import roslib
+              _get_pkg_path_var = roslib.packages.get_pkg_dir
+            except ImportError:
+              pass
+          if _get_pkg_path_var is not None:
+            return _get_pkg_path_var(package_name)
+        except Exception:
+          pass
+    return ""
 
 
 class Parse_JSIDL:
@@ -87,7 +122,7 @@ class Parse_JSIDL:
         for line in f_input.readlines():
             self.lua_file.write(line)
       if input_path is None:
-        input_path = get_pkg_path("fkie_iop_builder")
+        input_path = get_share_package("fkie_iop_builder")
         input_path = os.path.join(input_path, "jsidl")
         logging.info("Read from default jsidl input path: %s" % (input_path))
       else:

@@ -2,12 +2,12 @@
 import os
 import sys
 from setuptools import setup
-from distutils.command.build_py import build_py
+from setuptools.command.build_py import build_py
 
 package_name = 'fkie_iop_wireshark_plugin'
 scripts=['scripts/iop_create_dissector.py']
 packages=[package_name]
-package_dir={'': 'src'}
+package_dir={'': '.'}
 
 # install without catkin
 try:
@@ -38,7 +38,7 @@ try:
 
    setup(name='fkie_iop_wireshark_plugin',
          version='1.0.0',
-         license='Apache-2.0',
+         license='MIT',
          description='Wireshark dissector for IOP',
          author='Alexander Tiderko',
          author_email='alexander.tiderko@fkie.fraunhofer.de',
