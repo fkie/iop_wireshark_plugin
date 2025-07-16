@@ -2,7 +2,7 @@ include(CMakeParseArguments)
 
 macro(generate_jsidl_pyxb)
     find_package (Python COMPONENTS Interpreter Development)
-    find_program(PYXBGEN_BIN NAMES pyxbgen pyxbgen-py3 HINTS $ENV{HOME}/.local/bin)
+    find_program(PYXBGEN_BIN NAMES pyxbgen pyxbgen-py3 HINTS $ENV{HOME}/.local/bin /usr/local/bin)
     if (NOT ${CATKIN_DEVEL_PREFIX})
         # ros1
         if ( EXISTS ${CATKIN_DEVEL_PREFIX}/lib/python3)
