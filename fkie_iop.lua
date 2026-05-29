@@ -16737,6 +16737,1199 @@ function reportwiperstatus_d7c4.dissector(buffer, pinfo, tree)
 end
 messagetable:add(0xD7C4, reportwiperstatus_d7c4)
 
+querycostmap2d_d738 = Proto("querycostmap2d_d738", "QueryCostMap2D 0xd738")
+function querycostmap2d_d738.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryCostMap2D", string.format("QueryCostMap2D, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryCostMap2D"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_QueryCostMap2DSeq_tree = body_tree:add("QueryCostMap2DSeq")
+	local body_QueryCostMap2DSeq_pv = buffer(bufidx, 1):le_uint()
+	local body_QueryCostMap2DSeq_pv_count = 0
+	body_QueryCostMap2DSeq_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+	bufidx = bufidx + 1
+	if (bitAND(body_QueryCostMap2DSeq_pv, body_QueryCostMap2DSeq_pv_count) > 0) then
+		local body_QueryCostMap2DSeq_QueryCostMap2DRec_tree = body_QueryCostMap2DSeq_tree:add("QueryCostMap2DRec")
+		body_QueryCostMap2DSeq_QueryCostMap2DRec_tree:add(buffer(bufidx, 2), string.format("MaxWidth: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+		bufidx = bufidx + 2
+		body_QueryCostMap2DSeq_QueryCostMap2DRec_tree:add(buffer(bufidx, 2), string.format("MaxHeight: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+		bufidx = bufidx + 2
+	end
+	body_QueryCostMap2DSeq_pv_count = body_QueryCostMap2DSeq_pv_count + 1
+	if (bitAND(body_QueryCostMap2DSeq_pv, body_QueryCostMap2DSeq_pv_count) > 0) then
+		local body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_tree = body_QueryCostMap2DSeq_tree:add("QueryCostMap2DCenterVar")
+		body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 1", buffer(bufidx, 1):le_uint()))
+		local body_QueryCostMap2DSeq_index = buffer(bufidx, 1):le_uint()
+		bufidx = bufidx + 1
+		if (body_QueryCostMap2DSeq_index == 0) then
+			local body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DGlobalPoseRec_tree = body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_tree:add("CostMap2DGlobalPoseRec")
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterLatitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+			bufidx = bufidx + 4
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterLongitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+			bufidx = bufidx + 4
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("MapRotation: %.4f (scaled) -- (unsigned short integer) Rotation about the global Z axis.", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+			bufidx = bufidx + 2
+		end
+		if (body_QueryCostMap2DSeq_index == 1) then
+			local body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DLocalPoseRec_tree = body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_tree:add("CostMap2DLocalPoseRec")
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterX: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+			bufidx = bufidx + 4
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterY: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+			bufidx = bufidx + 4
+			body_QueryCostMap2DSeq_QueryCostMap2DCenterVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 2), string.format("MapRotation: %.4f (scaled) -- (unsigned short integer) Rotation about the local Z axis.", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+			bufidx = bufidx + 2
+		end
+	end
+	body_QueryCostMap2DSeq_pv_count = body_QueryCostMap2DSeq_pv_count + 1
+end
+messagetable:add(0xD738, querycostmap2d_d738)
+
+querynogozones_d739 = Proto("querynogozones_d739", "QueryNoGoZones 0xd739")
+function querynogozones_d739.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryNoGoZones", string.format("QueryNoGoZones, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryNoGoZones"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ZoneIDRec_tree = body_tree:add("ZoneIDRec")
+	body_ZoneIDRec_tree:add(buffer(bufidx, 2), string.format("ZoneID: %d -- (unsigned short integer) ID of the zone to be reported. If the specified value is zero (0), all zones will be reported.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xD739, querynogozones_d739)
+
+addnogozone_d740 = Proto("addnogozone_d740", "AddNoGoZone 0xd740")
+function addnogozone_d740.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "AddNoGoZone", string.format("AddNoGoZone, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "AddNoGoZone"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_NoGoZoneSeq_tree = body_tree:add("NoGoZoneSeq")
+	local body_NoGoZoneSeq_RequestIDRec_tree = body_NoGoZoneSeq_tree:add("RequestIDRec")
+	body_NoGoZoneSeq_RequestIDRec_tree:add(buffer(bufidx, 2), string.format("RequestID: %d -- (unsigned short integer) This value will be returned in the AddNoGoZoneResponse message to enable a client to match set and response pairs. The value is established by the client.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+	local body_NoGoZoneSeq_VertexVar_tree = body_NoGoZoneSeq_tree:add("VertexVar")
+	body_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 1", buffer(bufidx, 1):le_uint()))
+	local body_NoGoZoneSeq_index = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	if (body_NoGoZoneSeq_index == 0) then
+		local bufidx_start_body_NoGoZoneSeq_VertexVar = bufidx
+		local body_NoGoZoneSeq_VertexVar_GlobalVertexList_tree = body_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx_start_body_NoGoZoneSeq_VertexVar, buffer:len() - bufidx_start_body_NoGoZoneSeq_VertexVar), "GlobalVertexList ")
+		body_NoGoZoneSeq_VertexVar_GlobalVertexList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		local body_NoGoZoneSeq_VertexVar_GlobalVertexList_count = buffer(bufidx, 1):le_uint()
+		bufidx = bufidx + 1
+		for body_NoGoZoneSeq_VertexVar_counter=1,body_NoGoZoneSeq_VertexVar_GlobalVertexList_count do
+			local body_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree = body_NoGoZoneSeq_VertexVar_GlobalVertexList_tree:add(string.format("GlobalVertexRec_%d", body_NoGoZoneSeq_VertexVar_counter - 1))
+			body_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree:add(buffer(bufidx, 4), string.format("Latitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+			bufidx = bufidx + 4
+			body_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree:add(buffer(bufidx, 4), string.format("Longitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+			bufidx = bufidx + 4
+		end
+	end
+	if (body_NoGoZoneSeq_index == 1) then
+		local bufidx_start_body_NoGoZoneSeq_VertexVar = bufidx
+		local body_NoGoZoneSeq_VertexVar_LocalVertexList_tree = body_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx_start_body_NoGoZoneSeq_VertexVar, buffer:len() - bufidx_start_body_NoGoZoneSeq_VertexVar), "LocalVertexList ")
+		body_NoGoZoneSeq_VertexVar_LocalVertexList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		local body_NoGoZoneSeq_VertexVar_LocalVertexList_count = buffer(bufidx, 1):le_uint()
+		bufidx = bufidx + 1
+		for body_NoGoZoneSeq_VertexVar_counter=1,body_NoGoZoneSeq_VertexVar_LocalVertexList_count do
+			local body_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree = body_NoGoZoneSeq_VertexVar_LocalVertexList_tree:add(string.format("LocalVertexRec_%d", body_NoGoZoneSeq_VertexVar_counter - 1))
+			body_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree:add(buffer(bufidx, 4), string.format("X: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+			bufidx = bufidx + 4
+			body_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree:add(buffer(bufidx, 4), string.format("Y: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+			bufidx = bufidx + 4
+		end
+	end
+end
+messagetable:add(0xD740, addnogozone_d740)
+
+removenogozone_d741 = Proto("removenogozone_d741", "RemoveNoGoZone 0xd741")
+function removenogozone_d741.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RemoveNoGoZone", string.format("RemoveNoGoZone, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RemoveNoGoZone"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ZoneIDRec_tree = body_tree:add("ZoneIDRec")
+	body_ZoneIDRec_tree:add(buffer(bufidx, 2), string.format("ZoneID: %d -- (unsigned short integer) ID of the zone to be reported. If the specified value is zero (0), all zones will be reported.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xD741, removenogozone_d741)
+
+reportcostmap2d_d742 = Proto("reportcostmap2d_d742", "ReportCostMap2D 0xd742")
+function reportcostmap2d_d742.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportCostMap2D", string.format("ReportCostMap2D, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportCostMap2D"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_CostMap2DSeq_tree = body_tree:add("CostMap2DSeq")
+	local body_CostMap2DSeq_CostMap2DRec_tree = body_CostMap2DSeq_tree:add("CostMap2DRec")
+	body_CostMap2DSeq_CostMap2DRec_tree:add(buffer(bufidx, 2), string.format("NumberOfRows: %d -- (unsigned short integer) Number of rows in the map data.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+	body_CostMap2DSeq_CostMap2DRec_tree:add(buffer(bufidx, 2), string.format("NumberOfColumns: %d -- (unsigned short integer) Number of columns in the map data.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+	body_CostMap2DSeq_CostMap2DRec_tree:add(buffer(bufidx, 2), string.format("MapWidth: %.4f (scaled) -- (unsigned short integer) Total width of the cost map.", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+	bufidx = bufidx + 2
+	body_CostMap2DSeq_CostMap2DRec_tree:add(buffer(bufidx, 2), string.format("MapHeight: %.4f (scaled) -- (unsigned short integer) Total height of the cost map.", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+	bufidx = bufidx + 2
+	local body_CostMap2DSeq_CostMap2DPoseVar_tree = body_CostMap2DSeq_tree:add("CostMap2DPoseVar")
+	body_CostMap2DSeq_CostMap2DPoseVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 1", buffer(bufidx, 1):le_uint()))
+	local body_CostMap2DSeq_index = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	if (body_CostMap2DSeq_index == 0) then
+		local body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DGlobalPoseRec_tree = body_CostMap2DSeq_CostMap2DPoseVar_tree:add("CostMap2DGlobalPoseRec")
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterLatitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+		bufidx = bufidx + 4
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterLongitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+		bufidx = bufidx + 4
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DGlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("MapRotation: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+		bufidx = bufidx + 2
+	end
+	if (body_CostMap2DSeq_index == 1) then
+		local body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DLocalPoseRec_tree = body_CostMap2DSeq_CostMap2DPoseVar_tree:add("CostMap2DLocalPoseRec")
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterX: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+		bufidx = bufidx + 4
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 4), string.format("MapCenterY: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+		bufidx = bufidx + 4
+		body_CostMap2DSeq_CostMap2DPoseVar_CostMap2DLocalPoseRec_tree:add(buffer(bufidx, 2), string.format("MapRotation: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+		bufidx = bufidx + 2
+	end
+	local body_CostMap2DSeq_CostMap2DDataVar_tree = body_CostMap2DSeq_tree:add("CostMap2DDataVar")
+	body_CostMap2DSeq_CostMap2DDataVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 2", buffer(bufidx, 1):le_uint()))
+	local body_CostMap2DSeq_index = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	if (body_CostMap2DSeq_index == 0) then
+		local bufidx_start_body_CostMap2DSeq_CostMap2DDataVar = bufidx
+		local body_CostMap2DSeq_CostMap2DDataVar_CostDataList_tree = body_CostMap2DSeq_CostMap2DDataVar_tree:add(buffer(bufidx_start_body_CostMap2DSeq_CostMap2DDataVar, buffer:len() - bufidx_start_body_CostMap2DSeq_CostMap2DDataVar), "CostDataList ")
+		body_CostMap2DSeq_CostMap2DDataVar_CostDataList_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: 0, max_count: 65535", buffer(bufidx, 2):le_uint()))
+		local body_CostMap2DSeq_CostMap2DDataVar_CostDataList_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_CostMap2DSeq_CostMap2DDataVar_counter=1,body_CostMap2DSeq_CostMap2DDataVar_CostDataList_count do
+			local body_CostMap2DSeq_CostMap2DDataVar_CostDataList_CostDataRec_tree = body_CostMap2DSeq_CostMap2DDataVar_CostDataList_tree:add(string.format("CostDataRec_%d", body_CostMap2DSeq_CostMap2DDataVar_counter - 1))
+			local value_set = {}
+			local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+			body_CostMap2DSeq_CostMap2DDataVar_CostDataList_CostDataRec_tree:add(buffer(bufidx, 1), string.format("Cost: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+			bufidx = bufidx + 1
+		end
+	end
+	if (body_CostMap2DSeq_index == 1) then
+		local bufidx_start_body_CostMap2DSeq_CostMap2DDataVar = bufidx
+		local body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_tree = body_CostMap2DSeq_CostMap2DDataVar_tree:add(buffer(bufidx_start_body_CostMap2DSeq_CostMap2DDataVar, buffer:len() - bufidx_start_body_CostMap2DSeq_CostMap2DDataVar), "CostAndConfidenceDataList ")
+		body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: 0, max_count: 65535", buffer(bufidx, 2):le_uint()))
+		local body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_CostMap2DSeq_CostMap2DDataVar_counter=1,body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_count do
+			local body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_CostAndConfidenceDataRec_tree = body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_tree:add(string.format("CostAndConfidenceDataRec_%d", body_CostMap2DSeq_CostMap2DDataVar_counter - 1))
+			local value_set = {}
+			local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+			body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_CostAndConfidenceDataRec_tree:add(buffer(bufidx, 1), string.format("Cost: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+			bufidx = bufidx + 1
+			body_CostMap2DSeq_CostMap2DDataVar_CostAndConfidenceDataList_CostAndConfidenceDataRec_tree:add(buffer(bufidx, 1), string.format("Confidence: %.4f (scaled) -- (unsigned byte) Confidence value associated with the cost of the cell. A value of 0 means there is no confidence in the specified cost (unknown cost). A value of 100 means the cost of the cell is known perfectly.", buffer(bufidx, 1):le_uint() * 0.392156862745 + (0.000000000000)))
+			bufidx = bufidx + 1
+		end
+	end
+	if (body_CostMap2DSeq_index == 2) then
+		local bufidx_start_body_CostMap2DSeq_CostMap2DDataVar = bufidx
+		local body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_tree = body_CostMap2DSeq_CostMap2DDataVar_tree:add(buffer(bufidx_start_body_CostMap2DSeq_CostMap2DDataVar, buffer:len() - bufidx_start_body_CostMap2DSeq_CostMap2DDataVar), "RunLengthEncodedDataList ")
+		body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: 0, max_count: 65535", buffer(bufidx, 2):le_uint()))
+		local body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_CostMap2DSeq_CostMap2DDataVar_counter=1,body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_count do
+			local body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_tree = body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_tree:add(string.format("RunLengthEncodedDataRec_%d", body_CostMap2DSeq_CostMap2DDataVar_counter - 1))
+			local body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf = buffer(bufidx, 2)
+			local body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_tree = body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_tree:add(buffer(bufidx, 2), string.format("%s = CostAndRunLength: 0x%X ", bitstr(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 16), body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint()))
+			body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_tree:add(buffer(bufidx, 2), string.format("%s = CostSubField: %d", bitstr_part(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 16, 0, 2), bitVal(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 0, 2)))
+			body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_tree:add(buffer(bufidx, 2), string.format("%s = CertaintySubField: %d", bitstr_part(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 16, 3, 3), bitVal(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 3, 3)))
+			body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_tree:add(buffer(bufidx, 2), string.format("%s = NumberCellsSubField: %d", bitstr_part(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 16, 4, 15), bitVal(body_CostMap2DSeq_CostMap2DDataVar_RunLengthEncodedDataList_RunLengthEncodedDataRec_CostAndRunLength_buf:le_uint(), 4, 15)))
+			bufidx = bufidx + 2
+		end
+	end
+end
+messagetable:add(0xD742, reportcostmap2d_d742)
+
+reportnogozones_d743 = Proto("reportnogozones_d743", "ReportNoGoZones 0xd743")
+function reportnogozones_d743.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportNoGoZones", string.format("ReportNoGoZones, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportNoGoZones"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local bufidx_start_body = bufidx
+	local body_NoGoZonesList_tree = body_tree:add(buffer(bufidx_start_body, buffer:len() - bufidx_start_body), "NoGoZonesList ")
+	body_NoGoZonesList_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: 0, max_count: 65535", buffer(bufidx, 2):le_uint()))
+	local body_NoGoZonesList_count = buffer(bufidx, 2):le_uint()
+	bufidx = bufidx + 2
+	for body_counter=1,body_NoGoZonesList_count do
+		local body_NoGoZonesList_NoGoZoneSeq_tree = body_NoGoZonesList_tree:add(string.format("NoGoZoneSeq_%d", body_counter - 1))
+		local body_NoGoZonesList_NoGoZoneSeq_ZoneIDRec_tree = body_NoGoZonesList_NoGoZoneSeq_tree:add("ZoneIDRec")
+		body_NoGoZonesList_NoGoZoneSeq_ZoneIDRec_tree:add(buffer(bufidx, 2), string.format("ZoneID: %d -- (unsigned short integer) ID of the zone to be reported. If the specified value is zero (0), all zones will be reported.", buffer(bufidx, 2):le_uint()))
+		bufidx = bufidx + 2
+		local body_NoGoZonesList_NoGoZoneSeq_VertexVar_tree = body_NoGoZonesList_NoGoZoneSeq_tree:add("VertexVar")
+		body_NoGoZonesList_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 1", buffer(bufidx, 1):le_uint()))
+		local body_NoGoZonesList_NoGoZoneSeq_index = buffer(bufidx, 1):le_uint()
+		bufidx = bufidx + 1
+		if (body_NoGoZonesList_NoGoZoneSeq_index == 0) then
+			local bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar = bufidx
+			local body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_tree = body_NoGoZonesList_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar, buffer:len() - bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar), "GlobalVertexList ")
+			body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+			local body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_count = buffer(bufidx, 1):le_uint()
+			bufidx = bufidx + 1
+			for body_NoGoZonesList_NoGoZoneSeq_VertexVar_counter=1,body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_count do
+				local body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree = body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_tree:add(string.format("GlobalVertexRec_%d", body_NoGoZonesList_NoGoZoneSeq_VertexVar_counter - 1))
+				body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree:add(buffer(bufidx, 4), string.format("Latitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+				bufidx = bufidx + 4
+				body_NoGoZonesList_NoGoZoneSeq_VertexVar_GlobalVertexList_GlobalVertexRec_tree:add(buffer(bufidx, 4), string.format("Longitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+				bufidx = bufidx + 4
+			end
+		end
+		if (body_NoGoZonesList_NoGoZoneSeq_index == 1) then
+			local bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar = bufidx
+			local body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_tree = body_NoGoZonesList_NoGoZoneSeq_VertexVar_tree:add(buffer(bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar, buffer:len() - bufidx_start_body_NoGoZonesList_NoGoZoneSeq_VertexVar), "LocalVertexList ")
+			body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+			local body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_count = buffer(bufidx, 1):le_uint()
+			bufidx = bufidx + 1
+			for body_NoGoZonesList_NoGoZoneSeq_VertexVar_counter=1,body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_count do
+				local body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree = body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_tree:add(string.format("LocalVertexRec_%d", body_NoGoZonesList_NoGoZoneSeq_VertexVar_counter - 1))
+				body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree:add(buffer(bufidx, 4), string.format("X: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+				body_NoGoZonesList_NoGoZoneSeq_VertexVar_LocalVertexList_LocalVertexRec_tree:add(buffer(bufidx, 4), string.format("Y: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+		end
+	end
+end
+messagetable:add(0xD743, reportnogozones_d743)
+
+addnogozoneresponse_d744 = Proto("addnogozoneresponse_d744", "AddNoGoZoneResponse 0xd744")
+function addnogozoneresponse_d744.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/CostMap2DClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "AddNoGoZoneResponse", string.format("AddNoGoZoneResponse, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "AddNoGoZoneResponse"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_AddNoGoZoneResponseRec_tree = body_tree:add("AddNoGoZoneResponseRec")
+	body_AddNoGoZoneResponseRec_tree:add(buffer(bufidx, 2), string.format("RequestID: %d -- (unsigned short integer) This value will be returned in the AddNoGoZoneResponse message to enable a client to match set and response pairs. The value is established by the client.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+	local value_set = {[0] = "Success", [1] = "GlobalVerticesNotSupported", [2] = "LocalVerticesNotSupported"}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_AddNoGoZoneResponseRec_tree:add(buffer(bufidx, 1), string.format("ResponseCode: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+	body_AddNoGoZoneResponseRec_tree:add(buffer(bufidx, 2), string.format("ZoneID: %d -- (unsigned short integer) This field shall be zero (invalid) unless the ResponseCode is zero (Success). Otherwise, Global ID of the newly defined no go zone.", buffer(bufidx, 2):le_uint()))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xD744, addnogozoneresponse_d744)
+
+querydigitalresourceendpoint_e702 = Proto("querydigitalresourceendpoint_e702", "QueryDigitalResourceEndpoint 0xe702")
+function querydigitalresourceendpoint_e702.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/DigitalRessourceClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryDigitalResourceEndpoint", string.format("QueryDigitalResourceEndpoint, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryDigitalResourceEndpoint"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xE702, querydigitalresourceendpoint_e702)
+
+registerdigitalresourceendpoint_e703 = Proto("registerdigitalresourceendpoint_e703", "RegisterDigitalResourceEndpoint 0xe703")
+function registerdigitalresourceendpoint_e703.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/DigitalRessourceClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RegisterDigitalResourceEndpoint", string.format("RegisterDigitalResourceEndpoint, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RegisterDigitalResourceEndpoint"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_RegisterDigitalResourceSeq_tree = body_tree:add("RegisterDigitalResourceSeq")
+	local body_RegisterDigitalResourceSeq_RequestIDRec_tree = body_RegisterDigitalResourceSeq_tree:add("RequestIDRec")
+	body_RegisterDigitalResourceSeq_RequestIDRec_tree:add(buffer(bufidx, 1), string.format("RequestID: %d -- (unsigned byte) Client provided ID to link the response to the request", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+	local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree = body_RegisterDigitalResourceSeq_tree:add("DigitalResourceEndpointRec")
+	local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv = buffer(bufidx, 1):le_uint()
+	local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count = 0
+	body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+	bufidx = bufidx + 1
+	local value_set = {[0] = "RTSP", [1] = "MPEG2_TS", [2] = "FTP", [3] = "SFTP", [4] = "FTP_over_SSH", [5] = "HTTP", [6] = "HTTPS", [7] = "SCP"}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("ServerType: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+	local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_ServerURL_tree = body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("ServerURL[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+	body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_ServerURL_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+	if (bitAND(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv, body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count) > 0) then
+		local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf = buffer(bufidx, 4)
+		local body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_tree = body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 4), string.format("%s = JAUS_ID: 0x%X ", bitstr(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32), body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint()))
+		body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = ComponentID: %d", bitstr_part(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 0, 7), bitVal(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 0, 7)))
+		body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = NodeID: %d", bitstr_part(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 8, 15), bitVal(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 8, 15)))
+		body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = SubsystemID: %d", bitstr_part(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 16, 31), bitVal(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 16, 31)))
+		bufidx = bufidx + 4
+	end
+	body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count = body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count + 1
+	if (bitAND(body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv, body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count) > 0) then
+		body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 2), string.format("ResourceID: %d -- (unsigned short integer) The ID used by the configuration and control service to identify this source. This is the SensorID for visual sensors.", buffer(bufidx, 2):le_uint()))
+		bufidx = bufidx + 2
+	end
+	body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count = body_RegisterDigitalResourceSeq_DigitalResourceEndpointRec_pv_count + 1
+end
+messagetable:add(0xE703, registerdigitalresourceendpoint_e703)
+
+removedigitalresourceendpoint_e704 = Proto("removedigitalresourceendpoint_e704", "RemoveDigitalResourceEndpoint 0xe704")
+function removedigitalresourceendpoint_e704.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/DigitalRessourceClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RemoveDigitalResourceEndpoint", string.format("RemoveDigitalResourceEndpoint, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RemoveDigitalResourceEndpoint"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_RemoveDigitalResourceEndpointRec_tree = body_tree:add("RemoveDigitalResourceEndpointRec")
+	body_RemoveDigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("ID: %d -- (unsigned byte) Unique ID that was returned in the confirm message", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+	body_RemoveDigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("RequestID: %d -- (unsigned byte) Client provided ID to link the response to the request", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xE704, removedigitalresourceendpoint_e704)
+
+reportdigitalresourceendpoint_f702 = Proto("reportdigitalresourceendpoint_f702", "ReportDigitalResourceEndpoint 0xf702")
+function reportdigitalresourceendpoint_f702.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/DigitalRessourceClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportDigitalResourceEndpoint", string.format("ReportDigitalResourceEndpoint, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportDigitalResourceEndpoint"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local bufidx_start_body = bufidx
+	local body_DigitalResourceEndpointList_tree = body_tree:add(buffer(bufidx_start_body, buffer:len() - bufidx_start_body), "DigitalResourceEndpointList ")
+	body_DigitalResourceEndpointList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	local body_DigitalResourceEndpointList_count = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	for body_counter=1,body_DigitalResourceEndpointList_count do
+		local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree = body_DigitalResourceEndpointList_tree:add(string.format("DigitalResourceEndpointRec_%d", body_counter - 1))
+		local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv = buffer(bufidx, 1):le_uint()
+		local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count = 0
+		body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+		bufidx = bufidx + 1
+		local value_set = {[0] = "RTSP", [1] = "MPEG2_TS", [2] = "FTP", [3] = "SFTP", [4] = "FTP_over_SSH", [5] = "HTTP", [6] = "HTTPS", [7] = "SCP"}
+		local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+		body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("ServerType: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+		bufidx = bufidx + 1
+		local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_ServerURL_tree = body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("ServerURL[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_DigitalResourceEndpointList_DigitalResourceEndpointRec_ServerURL_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		if (bitAND(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv, body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count) > 0) then
+			local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf = buffer(bufidx, 4)
+			local body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_tree = body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 4), string.format("%s = JAUS_ID: 0x%X ", bitstr(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32), body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint()))
+			body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = ComponentID: %d", bitstr_part(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 0, 7), bitVal(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 0, 7)))
+			body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = NodeID: %d", bitstr_part(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 8, 15), bitVal(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 8, 15)))
+			body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_tree:add(buffer(bufidx, 4), string.format("%s = SubsystemID: %d", bitstr_part(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 32, 16, 31), bitVal(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_JAUS_ID_buf:le_uint(), 16, 31)))
+			bufidx = bufidx + 4
+		end
+		body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count = body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count + 1
+		if (bitAND(body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv, body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count) > 0) then
+			body_DigitalResourceEndpointList_DigitalResourceEndpointRec_tree:add(buffer(bufidx, 2), string.format("ResourceID: %d -- (unsigned short integer) The ID used by the configuration and control service to identify this source. This is the SensorID for visual sensors.", buffer(bufidx, 2):le_uint()))
+			bufidx = bufidx + 2
+		end
+		body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count = body_DigitalResourceEndpointList_DigitalResourceEndpointRec_pv_count + 1
+	end
+end
+messagetable:add(0xF702, reportdigitalresourceendpoint_f702)
+
+confirmdigitalresourceendpoint_f703 = Proto("confirmdigitalresourceendpoint_f703", "ConfirmDigitalResourceEndpoint 0xf703")
+function confirmdigitalresourceendpoint_f703.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/DigitalRessourceClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ConfirmDigitalResourceEndpoint", string.format("ConfirmDigitalResourceEndpoint, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ConfirmDigitalResourceEndpoint"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ConfirmDigitalResourceEndpointRec_tree = body_tree:add("ConfirmDigitalResourceEndpointRec")
+	body_ConfirmDigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("ID: %d -- (unsigned byte) Unique ID identifying this resource endpoint", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+	body_ConfirmDigitalResourceEndpointRec_tree:add(buffer(bufidx, 1), string.format("RequestID: %d -- (unsigned byte) Client provided ID to link the response to the request", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xF703, confirmdigitalresourceendpoint_f703)
+
+requestreleasecontrol_ff38 = Proto("requestreleasecontrol_ff38", "RequestReleaseControl 0xff38")
+function requestreleasecontrol_ff38.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RequestReleaseControl", string.format("RequestReleaseControl, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RequestReleaseControl"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local bufidx_start_body = bufidx
+	local body_RequestReleaseControlList_tree = body_tree:add(buffer(bufidx_start_body, buffer:len() - bufidx_start_body), "RequestReleaseControlList ")
+	body_RequestReleaseControlList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	local body_RequestReleaseControlList_count = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	for body_counter=1,body_RequestReleaseControlList_count do
+		local body_RequestReleaseControlList_RequestReleaseControlRec_tree = body_RequestReleaseControlList_tree:add(string.format("RequestReleaseControlRec_%d", body_counter - 1))
+		body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("ID: %d -- (unsigned byte) Local request ID for this Request.", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1
+		local value_set = {}
+		local value_id, value_name = (value_set[buffer(bufidx, 2):le_uint()])
+		body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 2), string.format("SrcSubsystemID: %d [%s] -- (unsigned short integer)", buffer(bufidx, 2):le_uint(), value_id))
+		bufidx = bufidx + 2
+		local value_set = {}
+		local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+		body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("SrcNodeID: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+		bufidx = bufidx + 1
+		local value_set = {}
+		local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+		body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("SrcComponentID: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+		bufidx = bufidx + 1
+		body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("AuthorityCode: %d -- (unsigned byte) Authority of the source requesting the handoff.", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1
+		local body_RequestReleaseControlList_RequestReleaseControlRec_Explanation_tree = body_RequestReleaseControlList_RequestReleaseControlRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Explanation[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_RequestReleaseControlList_RequestReleaseControlRec_Explanation_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+	end
+end
+messagetable:add(0xFF38, requestreleasecontrol_ff38)
+
+confirmreleasecontrol_ff39 = Proto("confirmreleasecontrol_ff39", "ConfirmReleaseControl 0xff39")
+function confirmreleasecontrol_ff39.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ConfirmReleaseControl", string.format("ConfirmReleaseControl, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ConfirmReleaseControl"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local bufidx_start_body = bufidx
+	local body_ReleaseControlList_tree = body_tree:add(buffer(bufidx_start_body, buffer:len() - bufidx_start_body), "ReleaseControlList ")
+	body_ReleaseControlList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	local body_ReleaseControlList_count = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	for body_counter=1,body_ReleaseControlList_count do
+		local body_ReleaseControlList_ReleaseControlRec_tree = body_ReleaseControlList_tree:add(string.format("ReleaseControlRec_%d", body_counter - 1))
+		body_ReleaseControlList_ReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("ID: %d -- (unsigned byte) Matches the ID from a RequestReleaseControlToRec in the RequestReleaseControl message.", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1
+		local value_set = {[0] = "GRANTED", [1] = "DENIED", [2] = "WAIT"}
+		local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+		body_ReleaseControlList_ReleaseControlRec_tree:add(buffer(bufidx, 1), string.format("ResponseCode: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+		bufidx = bufidx + 1
+	end
+end
+messagetable:add(0xFF39, confirmreleasecontrol_ff39)
+
+requesthandoff_ff31 = Proto("requesthandoff_ff31", "RequestHandoff 0xff31")
+function requesthandoff_ff31.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RequestHandoff", string.format("RequestHandoff, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RequestHandoff"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_RequestHandoffRec_tree = body_tree:add("RequestHandoffRec")
+	local value_set = {}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_RequestHandoffRec_tree:add(buffer(bufidx, 1), string.format("AuthorityCode: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+	local body_RequestHandoffRec_Explanation_tree = body_RequestHandoffRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Explanation[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+	body_RequestHandoffRec_Explanation_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+end
+messagetable:add(0xFF31, requesthandoff_ff31)
+
+queryhandofftimeout_ff32 = Proto("queryhandofftimeout_ff32", "QueryHandoffTimeout 0xff32")
+function queryhandofftimeout_ff32.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryHandoffTimeout", string.format("QueryHandoffTimeout, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryHandoffTimeout"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xFF32, queryhandofftimeout_ff32)
+
+queryenhancedtimeout_ff33 = Proto("queryenhancedtimeout_ff33", "QueryEnhancedTimeout 0xff33")
+function queryenhancedtimeout_ff33.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryEnhancedTimeout", string.format("QueryEnhancedTimeout, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryEnhancedTimeout"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xFF33, queryenhancedtimeout_ff33)
+
+removehandoffrequest_ff34 = Proto("removehandoffrequest_ff34", "RemoveHandoffRequest 0xff34")
+function removehandoffrequest_ff34.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "RemoveHandoffRequest", string.format("RemoveHandoffRequest, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "RemoveHandoffRequest"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_RemoveHandoffRequestRec_tree = body_tree:add("RemoveHandoffRequestRec")
+	local value_set = {}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_RemoveHandoffRequestRec_tree:add(buffer(bufidx, 1), string.format("ID: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xFF34, removehandoffrequest_ff34)
+
+confirmhandoffrequest_ff35 = Proto("confirmhandoffrequest_ff35", "ConfirmHandoffRequest 0xff35")
+function confirmhandoffrequest_ff35.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ConfirmHandoffRequest", string.format("ConfirmHandoffRequest, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ConfirmHandoffRequest"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ConfirmHandoffRequestRec_tree = body_tree:add("ConfirmHandoffRequestRec")
+	local value_set = {}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_ConfirmHandoffRequestRec_tree:add(buffer(bufidx, 1), string.format("ID: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+	local value_set = {[0] = "GRANTED", [1] = "NOT_AVAILABLE", [2] = "TIMEOUT", [3] = "DENIED", [4] = "QUEUED", [5] = "DEFERRED", [6] = "INSUFFICIENT_AUTHORITY"}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_ConfirmHandoffRequestRec_tree:add(buffer(bufidx, 1), string.format("ResponseCode: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xFF35, confirmhandoffrequest_ff35)
+
+reporthandofftimeout_ff36 = Proto("reporthandofftimeout_ff36", "ReportHandoffTimeout 0xff36")
+function reporthandofftimeout_ff36.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportHandoffTimeout", string.format("ReportHandoffTimeout, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportHandoffTimeout"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ReportHandoffTimeoutRec_tree = body_tree:add("ReportHandoffTimeoutRec")
+	body_ReportHandoffTimeoutRec_tree:add(buffer(bufidx, 1), string.format("Timeout: %d -- (unsigned byte) Service must receive handoff confirmation from the current controller before this timeout expires. A value of zero indicates this feature is disabled.", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xFF36, reporthandofftimeout_ff36)
+
+reportenhancedtimeout_ff37 = Proto("reportenhancedtimeout_ff37", "ReportEnhancedTimeout 0xff37")
+function reportenhancedtimeout_ff37.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/HandoffClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportEnhancedTimeout", string.format("ReportEnhancedTimeout, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportEnhancedTimeout"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_ReportEnhancedTimeoutRec_tree = body_tree:add("ReportEnhancedTimeoutRec")
+	body_ReportEnhancedTimeoutRec_tree:add(buffer(bufidx, 1), string.format("Timeout: %d -- (unsigned byte) Clients must re-request handoff to prevent being denied handoff request when the timeout expires. A value of zero indicates this feature is disabled.", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1
+end
+messagetable:add(0xFF37, reportenhancedtimeout_ff37)
+
+querymeasurement_f92a = Proto("querymeasurement_f92a", "QueryMeasurement 0xf92a")
+function querymeasurement_f92a.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/MeasurementClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryMeasurement", string.format("QueryMeasurement, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryMeasurement"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X -- (unsigned short integer) A two byte field to hold the message ID of a message', messageid))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xF92A, querymeasurement_f92a)
+
+reportmeasurement_f92b = Proto("reportmeasurement_f92b", "ReportMeasurement 0xf92b")
+function reportmeasurement_f92b.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/MeasurementClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportMeasurement", string.format("ReportMeasurement, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportMeasurement"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X -- (unsigned short integer) A two byte field to hold the message ID of a message', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_MeasurementSeq_tree = body_tree:add("MeasurementSeq")
+	local body_MeasurementSeq_pv = buffer(bufidx, 1):le_uint()
+	local body_MeasurementSeq_pv_count = 0
+	body_MeasurementSeq_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+	bufidx = bufidx + 1
+	local body_MeasurementSeq_DeviceRec_tree = body_MeasurementSeq_tree:add("DeviceRec")
+	local body_MeasurementSeq_DeviceRec_pv = buffer(bufidx, 1):le_uint()
+	local body_MeasurementSeq_DeviceRec_pv_count = 0
+	body_MeasurementSeq_DeviceRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+	bufidx = bufidx + 1
+	local body_MeasurementSeq_DeviceRec_DeviceName_tree = body_MeasurementSeq_DeviceRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("DeviceName[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+	body_MeasurementSeq_DeviceRec_DeviceName_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+	if (bitAND(body_MeasurementSeq_DeviceRec_pv, body_MeasurementSeq_DeviceRec_pv_count) > 0) then
+		local body_MeasurementSeq_DeviceRec_DeviceDesignation_tree = body_MeasurementSeq_DeviceRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("DeviceDesignation[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_MeasurementSeq_DeviceRec_DeviceDesignation_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+	end
+	body_MeasurementSeq_DeviceRec_pv_count = body_MeasurementSeq_DeviceRec_pv_count + 1
+	if (bitAND(body_MeasurementSeq_DeviceRec_pv, body_MeasurementSeq_DeviceRec_pv_count) > 0) then
+		local body_MeasurementSeq_DeviceRec_Classification_tree = body_MeasurementSeq_DeviceRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Classification[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_MeasurementSeq_DeviceRec_Classification_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+	end
+	body_MeasurementSeq_DeviceRec_pv_count = body_MeasurementSeq_DeviceRec_pv_count + 1
+	local bufidx_start_body_MeasurementSeq = bufidx
+	local body_MeasurementSeq_ReadingsList_tree = body_MeasurementSeq_tree:add(buffer(bufidx_start_body_MeasurementSeq, buffer:len() - bufidx_start_body_MeasurementSeq), "ReadingsList ")
+	body_MeasurementSeq_ReadingsList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+	local body_MeasurementSeq_ReadingsList_count = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	for body_MeasurementSeq_counter=1,body_MeasurementSeq_ReadingsList_count do
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_tree = body_MeasurementSeq_ReadingsList_tree:add(string.format("ReadingSeq_%d", body_MeasurementSeq_counter - 1))
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_tree:add("ReadingRec")
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv = buffer(bufidx, 1):le_uint()
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = 0
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+		bufidx = bufidx + 1
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Sensor_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Sensor[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Sensor_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Source_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Source[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Source_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Type_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Type[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Type_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Unit_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("Unit[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_Unit_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1), string.format("Minimum: %d -- (unsigned byte) sometimes the resulting values are accumulated, so you can specify the details", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1), string.format("Avarage: %d -- (unsigned byte) sometimes the resulting values are accumulated, so you can specify the details", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1), string.format("Maximum: %d -- (unsigned byte) sometimes the resulting values are accumulated, so you can specify the details", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			local value_set = {[255] = "NOT_SUPPORTED", [0] = "NO_ALERT", [1] = "LOW", [2] = "MIDDLE", [3] = "HIGHT"}
+			local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1), string.format("AlertLevel: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+			bufidx = bufidx + 1
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_AlertExplanation_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("AlertExplanation[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_AlertExplanation_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv, body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count) > 0) then
+			local body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_ExtendedInfo_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_tree:add(buffer(bufidx, 1 + buffer(bufidx, 1):le_uint()), string.format("ExtendedInfo[%d]: %s", buffer(bufidx, 1):le_uint(), buffer(bufidx + 1, buffer(bufidx, 1):le_uint()):string()))
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_ExtendedInfo_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+			bufidx = bufidx + 1 + buffer(bufidx, 1):le_uint()
+		end
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count = body_MeasurementSeq_ReadingsList_ReadingSeq_ReadingRec_pv_count + 1
+		local bufidx_start_body_MeasurementSeq_ReadingsList_ReadingSeq = bufidx
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_tree:add(buffer(bufidx_start_body_MeasurementSeq_ReadingsList_ReadingSeq, buffer:len() - bufidx_start_body_MeasurementSeq_ReadingsList_ReadingSeq), "ValueList ")
+		body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: 0, max_count: 255", buffer(bufidx, 1):le_uint()))
+		local body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_count = buffer(bufidx, 1):le_uint()
+		bufidx = bufidx + 1
+		for body_MeasurementSeq_ReadingsList_ReadingSeq_counter=1,body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_count do
+			local body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_ValueRec_tree = body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_tree:add(string.format("ValueRec_%d", body_MeasurementSeq_ReadingsList_ReadingSeq_counter - 1))
+			body_MeasurementSeq_ReadingsList_ReadingSeq_ValueList_ValueRec_tree:add(buffer(bufidx, 4), string.format("Value: %.4f (scaled) -- (unsigned integer) one value or a spectrum of values", buffer(bufidx, 4):le_uint() * 0.000004656613 + (-10000.000000000000)))
+			bufidx = bufidx + 4
+		end
+	end
+	if (bitAND(body_MeasurementSeq_pv, body_MeasurementSeq_pv_count) > 0) then
+		local body_MeasurementSeq_GlobalPoseRec_tree = body_MeasurementSeq_tree:add("GlobalPoseRec")
+		local body_MeasurementSeq_GlobalPoseRec_pv = buffer(bufidx, 2):le_uint()
+		local body_MeasurementSeq_GlobalPoseRec_pv_count = 0
+		body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 2):le_uint(), 2 * 8)))
+		bufidx = bufidx + 2
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Latitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+			bufidx = bufidx + 4
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Longitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+			bufidx = bufidx + 4
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Altitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000010477379 + (-10000.000000000000)))
+			bufidx = bufidx + 4
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Position_RMS: %.4f (scaled) -- (unsigned integer) An RMS value indicating the validity of the position data.", buffer(bufidx, 4):le_uint() * 0.000000023283 + (0.000000000000)))
+			bufidx = bufidx + 4
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Roll: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+			bufidx = bufidx + 2
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Pitch: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+			bufidx = bufidx + 2
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Yaw: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+			bufidx = bufidx + 2
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+		if (bitAND(body_MeasurementSeq_GlobalPoseRec_pv, body_MeasurementSeq_GlobalPoseRec_pv_count) > 0) then
+			body_MeasurementSeq_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Attitude_RMS: %.4f (scaled) -- (unsigned short integer) An RMS value indicating the validity of the orientation data.", buffer(bufidx, 2):le_uint() * 0.000047937631 + (0.000000000000)))
+			bufidx = bufidx + 2
+		end
+		body_MeasurementSeq_GlobalPoseRec_pv_count = body_MeasurementSeq_GlobalPoseRec_pv_count + 1
+	end
+	body_MeasurementSeq_pv_count = body_MeasurementSeq_pv_count + 1
+	if (bitAND(body_MeasurementSeq_pv, body_MeasurementSeq_pv_count) > 0) then
+		local body_MeasurementSeq_TimestampRec_tree = body_MeasurementSeq_tree:add("TimestampRec")
+		local body_MeasurementSeq_TimestampRec_TimeStamp_buf = buffer(bufidx, 4)
+		local body_MeasurementSeq_TimestampRec_TimeStamp_tree = body_MeasurementSeq_TimestampRec_tree:add(buffer(bufidx, 4), string.format("%s = TimeStamp: 0x%X ", bitstr(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32), body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint()))
+		body_MeasurementSeq_TimestampRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Milliseconds: %d", bitstr_part(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32, 0, 9), bitVal(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 0, 9)))
+		body_MeasurementSeq_TimestampRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Seconds: %d", bitstr_part(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32, 10, 15), bitVal(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 10, 15)))
+		body_MeasurementSeq_TimestampRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Minutes: %d", bitstr_part(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32, 16, 21), bitVal(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 16, 21)))
+		body_MeasurementSeq_TimestampRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Hour: %d", bitstr_part(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32, 22, 26), bitVal(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 22, 26)))
+		body_MeasurementSeq_TimestampRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Day: %d", bitstr_part(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 32, 27, 31), bitVal(body_MeasurementSeq_TimestampRec_TimeStamp_buf:le_uint(), 27, 31)))
+		bufidx = bufidx + 4
+	end
+	body_MeasurementSeq_pv_count = body_MeasurementSeq_pv_count + 1
+end
+messagetable:add(0xF92B, reportmeasurement_f92b)
+
+querypathreportercapabilities_def0 = Proto("querypathreportercapabilities_def0", "QueryPathReporterCapabilities 0xdef0")
+function querypathreportercapabilities_def0.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/PathReporterClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryPathReporterCapabilities", string.format("QueryPathReporterCapabilities, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryPathReporterCapabilities"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+end
+messagetable:add(0xDEF0, querypathreportercapabilities_def0)
+
+querypath_def1 = Proto("querypath_def1", "QueryPath 0xdef1")
+function querypath_def1.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/PathReporterClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "QueryPath", string.format("QueryPath, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "QueryPath"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_QueryPathRec_tree = body_tree:add("QueryPathRec")
+	local body_QueryPathRec_pv = buffer(bufidx, 1):le_uint()
+	local body_QueryPathRec_pv_count = 0
+	body_QueryPathRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+	bufidx = bufidx + 1
+	local value_set = {[0] = "HistoricalGlobalPath", [1] = "HistoricalLocalPath", [2] = "PlannedGlobalPath", [3] = "PlannedLocalPath"}
+	local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+	body_QueryPathRec_tree:add(buffer(bufidx, 1), string.format("PathType: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+	bufidx = bufidx + 1
+	if (bitAND(body_QueryPathRec_pv, body_QueryPathRec_pv_count) > 0) then
+		body_QueryPathRec_tree:add(buffer(bufidx, 2), string.format("TargetResolution: %.4f (scaled) -- (unsigned short integer) The desired distance between reported path points.", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+		bufidx = bufidx + 2
+	end
+	body_QueryPathRec_pv_count = body_QueryPathRec_pv_count + 1
+	if (bitAND(body_QueryPathRec_pv, body_QueryPathRec_pv_count) > 0) then
+		body_QueryPathRec_tree:add(buffer(bufidx, 2), string.format("MaximumPoints: %d -- (unsigned short integer) The maximum number of elements for the list of points to be returned.", buffer(bufidx, 2):le_uint()))
+		bufidx = bufidx + 2
+	end
+	body_QueryPathRec_pv_count = body_QueryPathRec_pv_count + 1
+	if (bitAND(body_QueryPathRec_pv, body_QueryPathRec_pv_count) > 0) then
+		body_QueryPathRec_tree:add(buffer(bufidx, 4), string.format("MaximumDistance: %d -- (unsigned integer) The maximum planned distance for the list of points to be returned", buffer(bufidx, 4):le_uint()))
+		bufidx = bufidx + 4
+	end
+	body_QueryPathRec_pv_count = body_QueryPathRec_pv_count + 1
+	if (bitAND(body_QueryPathRec_pv, body_QueryPathRec_pv_count) > 0) then
+		body_QueryPathRec_tree:add(buffer(bufidx, 4), string.format("MaximumTime: %d -- (unsigned integer) The maximum planned time for the list of points to be returned.", buffer(bufidx, 4):le_uint()))
+		bufidx = bufidx + 4
+	end
+	body_QueryPathRec_pv_count = body_QueryPathRec_pv_count + 1
+end
+messagetable:add(0xDEF1, querypath_def1)
+
+reportpathreportercapabilities_def2 = Proto("reportpathreportercapabilities_def2", "ReportPathReporterCapabilities 0xdef2")
+function reportpathreportercapabilities_def2.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/PathReporterClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportPathReporterCapabilities", string.format("ReportPathReporterCapabilities, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportPathReporterCapabilities"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local bufidx_start_body = bufidx
+	local body_PathReporterCapabilitiesList_tree = body_tree:add(buffer(bufidx_start_body, buffer:len() - bufidx_start_body), "PathReporterCapabilitiesList ")
+	body_PathReporterCapabilitiesList_tree:add(buffer(bufidx, 1), string.format("Count: %d, min_count: None, max_count: None", buffer(bufidx, 1):le_uint()))
+	local body_PathReporterCapabilitiesList_count = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	for body_counter=1,body_PathReporterCapabilitiesList_count do
+		local body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree = body_PathReporterCapabilitiesList_tree:add(string.format("PathReporterCapabilitiesRec_%d", body_counter - 1))
+		local body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv = buffer(bufidx, 1):le_uint()
+		local body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = 0
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 1), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 1):le_uint(), 1 * 8)))
+		bufidx = bufidx + 1
+		local value_set = {[0] = "HistoricalGlobalPath", [1] = "HistoricalLocalPath", [2] = "PlannedGlobalPath", [3] = "PlannedLocalPath"}
+		local value_id, value_name = (value_set[buffer(bufidx, 1):le_uint()])
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 1), string.format("PathType: %d [%s] -- (unsigned byte)", buffer(bufidx, 1):le_uint(), value_id))
+		bufidx = bufidx + 1
+		if (bitAND(body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv, body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count) > 0) then
+			body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 2), string.format("MinTargetResolution: %.4f (scaled) -- (unsigned short integer) The minimum supported distance between reported path points. For implementations that do not support interpolation, the Min and Max should be identical.", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+			bufidx = bufidx + 2
+		end
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count + 1
+		if (bitAND(body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv, body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count) > 0) then
+			body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 2), string.format("MaxTargetResolution: %.4f (scaled) -- (unsigned short integer) The maximum supported distance between reported path points. For implementations that do not support interpolation, the Min and Max should be identical.", buffer(bufidx, 2):le_uint() * 0.152590218967 + (0.000000000000)))
+			bufidx = bufidx + 2
+		end
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count + 1
+		if (bitAND(body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv, body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count) > 0) then
+			body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 2), string.format("MaximumPoints: %d -- (unsigned short integer) The maximum supported element count for the list of points to be returned.", buffer(bufidx, 2):le_uint()))
+			bufidx = bufidx + 2
+		end
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count + 1
+		if (bitAND(body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv, body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count) > 0) then
+			body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 4), string.format("MaximumDistance: %d -- (unsigned integer) The maximum supported distance for the list of points to be returned.", buffer(bufidx, 4):le_uint()))
+			bufidx = bufidx + 4
+		end
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count + 1
+		if (bitAND(body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv, body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count) > 0) then
+			body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_tree:add(buffer(bufidx, 4), string.format("MaximumTime: %d -- (unsigned integer) The maximum supported time for the list of points to be returned.", buffer(bufidx, 4):le_uint()))
+			bufidx = bufidx + 4
+		end
+		body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count = body_PathReporterCapabilitiesList_PathReporterCapabilitiesRec_pv_count + 1
+	end
+end
+messagetable:add(0xDEF2, reportpathreportercapabilities_def2)
+
+reportpath_def3 = Proto("reportpath_def3", "ReportPath 0xdef3")
+function reportpath_def3.dissector(buffer, pinfo, tree)
+	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.iop/MessageSet/PathReporterClass.xml
+	local bufidx = 0
+	messageid = buffer(bufidx, 2):le_uint()
+	local tree_msg = tree:add(pf_message_name, buffer(), "ReportPath", string.format("ReportPath, MessageID: %04X, %d bytes", messageid, buffer:len()))
+	pinfo.cols.info:set(string.format("%s %s", tostring(pinfo.cols.info), "ReportPath"))
+	tree_msg:add(pf_messageid, buffer(bufidx, 2), messageid, string.format('Header, MessageID: 0x%04X ', messageid))
+	bufidx = bufidx + 2
+	local body_tree = tree_msg:add(buffer(bufidx, buffer:len() - bufidx), "Body")
+	local body_PathVar_tree = body_tree:add("PathVar")
+	body_PathVar_tree:add(buffer(bufidx, 1), string.format("vtag: %d, min_count: 0, max_count: 3", buffer(bufidx, 1):le_uint()))
+	local body_index = buffer(bufidx, 1):le_uint()
+	bufidx = bufidx + 1
+	if (body_index == 0) then
+		local bufidx_start_body_PathVar = bufidx
+		local body_PathVar_HistoricalGlobalPath_tree = body_PathVar_tree:add(buffer(bufidx_start_body_PathVar, buffer:len() - bufidx_start_body_PathVar), "HistoricalGlobalPath ")
+		body_PathVar_HistoricalGlobalPath_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: None, max_count: None", buffer(bufidx, 2):le_uint()))
+		local body_PathVar_HistoricalGlobalPath_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_PathVar_counter=1,body_PathVar_HistoricalGlobalPath_count do
+			local body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree = body_PathVar_HistoricalGlobalPath_tree:add(string.format("GlobalPoseRec_%d", body_PathVar_counter - 1))
+			local body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv = buffer(bufidx, 2):le_uint()
+			local body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = 0
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 2):le_uint(), 2 * 8)))
+			bufidx = bufidx + 2
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Latitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Longitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Altitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000010477379 + (-10000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Position_RMS: %.4f (scaled) -- (unsigned integer) An RMS value indicating the validity of the position data.", buffer(bufidx, 4):le_uint() * 0.000000023283 + (0.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Roll: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Pitch: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Yaw: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Attitude_RMS: %.4f (scaled) -- (unsigned short integer) An RMS value indicating the validity of the orientation data.", buffer(bufidx, 2):le_uint() * 0.000047937631 + (0.000000000000)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv, body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				local body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf = buffer(bufidx, 4)
+				local body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("%s = TimeStamp: 0x%X ", bitstr(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32), body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint()))
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Milliseconds: %d", bitstr_part(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 0, 9), bitVal(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 0, 9)))
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Seconds: %d", bitstr_part(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 10, 15), bitVal(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 10, 15)))
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Minutes: %d", bitstr_part(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 16, 21), bitVal(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 16, 21)))
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Hour: %d", bitstr_part(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 22, 26), bitVal(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 22, 26)))
+				body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Day: %d", bitstr_part(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 27, 31), bitVal(body_PathVar_HistoricalGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 27, 31)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count = body_PathVar_HistoricalGlobalPath_GlobalPoseRec_pv_count + 1
+		end
+	end
+	if (body_index == 1) then
+		local bufidx_start_body_PathVar = bufidx
+		local body_PathVar_HistoricalLocalPath_tree = body_PathVar_tree:add(buffer(bufidx_start_body_PathVar, buffer:len() - bufidx_start_body_PathVar), "HistoricalLocalPath ")
+		body_PathVar_HistoricalLocalPath_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: None, max_count: None", buffer(bufidx, 2):le_uint()))
+		local body_PathVar_HistoricalLocalPath_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_PathVar_counter=1,body_PathVar_HistoricalLocalPath_count do
+			local body_PathVar_HistoricalLocalPath_LocalPoseRec_tree = body_PathVar_HistoricalLocalPath_tree:add(string.format("LocalPoseRec_%d", body_PathVar_counter - 1))
+			local body_PathVar_HistoricalLocalPath_LocalPoseRec_pv = buffer(bufidx, 2):le_uint()
+			local body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = 0
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 2):le_uint(), 2 * 8)))
+			bufidx = bufidx + 2
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("X: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Y: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Z: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Position_RMS: %.4f (scaled) -- (unsigned integer) An RMS value indicating the validity of the position data.", buffer(bufidx, 4):le_uint() * 0.000000023283 + (0.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Roll: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Pitch: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Yaw: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Attitude_RMS: %.4f (scaled) -- (unsigned short integer) An RMS value indicating the validity of the orientation data.", buffer(bufidx, 2):le_uint() * 0.000047937631 + (0.000000000000)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_HistoricalLocalPath_LocalPoseRec_pv, body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count) > 0) then
+				local body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf = buffer(bufidx, 4)
+				local body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree = body_PathVar_HistoricalLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("%s = TimeStamp: 0x%X ", bitstr(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32), body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint()))
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Milliseconds: %d", bitstr_part(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 0, 9), bitVal(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 0, 9)))
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Seconds: %d", bitstr_part(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 10, 15), bitVal(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 10, 15)))
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Minutes: %d", bitstr_part(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 16, 21), bitVal(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 16, 21)))
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Hour: %d", bitstr_part(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 22, 26), bitVal(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 22, 26)))
+				body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Day: %d", bitstr_part(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 27, 31), bitVal(body_PathVar_HistoricalLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 27, 31)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count = body_PathVar_HistoricalLocalPath_LocalPoseRec_pv_count + 1
+		end
+	end
+	if (body_index == 2) then
+		local bufidx_start_body_PathVar = bufidx
+		local body_PathVar_PlannedGlobalPath_tree = body_PathVar_tree:add(buffer(bufidx_start_body_PathVar, buffer:len() - bufidx_start_body_PathVar), "PlannedGlobalPath ")
+		body_PathVar_PlannedGlobalPath_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: None, max_count: None", buffer(bufidx, 2):le_uint()))
+		local body_PathVar_PlannedGlobalPath_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_PathVar_counter=1,body_PathVar_PlannedGlobalPath_count do
+			local body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree = body_PathVar_PlannedGlobalPath_tree:add(string.format("GlobalPoseRec_%d", body_PathVar_counter - 1))
+			local body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv = buffer(bufidx, 2):le_uint()
+			local body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = 0
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 2):le_uint(), 2 * 8)))
+			bufidx = bufidx + 2
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Latitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000041910 + (-90.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Longitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000000083819 + (-180.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Altitude: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000010477379 + (-10000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("Position_RMS: %.4f (scaled) -- (unsigned integer) An RMS value indicating the validity of the position data.", buffer(bufidx, 4):le_uint() * 0.000000023283 + (0.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Roll: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Pitch: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Yaw: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 2), string.format("Attitude_RMS: %.4f (scaled) -- (unsigned short integer) An RMS value indicating the validity of the orientation data.", buffer(bufidx, 2):le_uint() * 0.000047937631 + (0.000000000000)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv, body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count) > 0) then
+				local body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf = buffer(bufidx, 4)
+				local body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree = body_PathVar_PlannedGlobalPath_GlobalPoseRec_tree:add(buffer(bufidx, 4), string.format("%s = TimeStamp: 0x%X ", bitstr(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32), body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint()))
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Milliseconds: %d", bitstr_part(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 0, 9), bitVal(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 0, 9)))
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Seconds: %d", bitstr_part(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 10, 15), bitVal(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 10, 15)))
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Minutes: %d", bitstr_part(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 16, 21), bitVal(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 16, 21)))
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Hour: %d", bitstr_part(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 22, 26), bitVal(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 22, 26)))
+				body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Day: %d", bitstr_part(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 32, 27, 31), bitVal(body_PathVar_PlannedGlobalPath_GlobalPoseRec_TimeStamp_buf:le_uint(), 27, 31)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count = body_PathVar_PlannedGlobalPath_GlobalPoseRec_pv_count + 1
+		end
+	end
+	if (body_index == 3) then
+		local bufidx_start_body_PathVar = bufidx
+		local body_PathVar_PlannedLocalPath_tree = body_PathVar_tree:add(buffer(bufidx_start_body_PathVar, buffer:len() - bufidx_start_body_PathVar), "PlannedLocalPath ")
+		body_PathVar_PlannedLocalPath_tree:add(buffer(bufidx, 2), string.format("Count: %d, min_count: None, max_count: None", buffer(bufidx, 2):le_uint()))
+		local body_PathVar_PlannedLocalPath_count = buffer(bufidx, 2):le_uint()
+		bufidx = bufidx + 2
+		for body_PathVar_counter=1,body_PathVar_PlannedLocalPath_count do
+			local body_PathVar_PlannedLocalPath_LocalPoseRec_tree = body_PathVar_PlannedLocalPath_tree:add(string.format("LocalPoseRec_%d", body_PathVar_counter - 1))
+			local body_PathVar_PlannedLocalPath_LocalPoseRec_pv = buffer(bufidx, 2):le_uint()
+			local body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = 0
+			body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Presence Vector: %s", bitstr(buffer(bufidx, 2):le_uint(), 2 * 8)))
+			bufidx = bufidx + 2
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("X: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Y: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Z: %.4f (scaled) ", buffer(bufidx, 4):le_uint() * 0.000046566129 + (-100000.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("Position_RMS: %.4f (scaled) -- (unsigned integer) An RMS value indicating the validity of the position data.", buffer(bufidx, 4):le_uint() * 0.000000023283 + (0.000000000000)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Roll: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Pitch: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Yaw: %.4f (scaled) ", buffer(bufidx, 2):le_uint() * 0.000095875262 + (-3.141592653590)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 2), string.format("Attitude_RMS: %.4f (scaled) -- (unsigned short integer) An RMS value indicating the validity of the orientation data.", buffer(bufidx, 2):le_uint() * 0.000047937631 + (0.000000000000)))
+				bufidx = bufidx + 2
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+			if (bitAND(body_PathVar_PlannedLocalPath_LocalPoseRec_pv, body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count) > 0) then
+				local body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf = buffer(bufidx, 4)
+				local body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree = body_PathVar_PlannedLocalPath_LocalPoseRec_tree:add(buffer(bufidx, 4), string.format("%s = TimeStamp: 0x%X ", bitstr(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32), body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint()))
+				body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Milliseconds: %d", bitstr_part(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 0, 9), bitVal(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 0, 9)))
+				body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Seconds: %d", bitstr_part(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 10, 15), bitVal(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 10, 15)))
+				body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Minutes: %d", bitstr_part(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 16, 21), bitVal(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 16, 21)))
+				body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Hour: %d", bitstr_part(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 22, 26), bitVal(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 22, 26)))
+				body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_tree:add(buffer(bufidx, 4), string.format("%s = Day: %d", bitstr_part(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 32, 27, 31), bitVal(body_PathVar_PlannedLocalPath_LocalPoseRec_TimeStamp_buf:le_uint(), 27, 31)))
+				bufidx = bufidx + 4
+			end
+			body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count = body_PathVar_PlannedLocalPath_LocalPoseRec_pv_count + 1
+		end
+	end
+end
+messagetable:add(0xDEF3, reportpath_def3)
+
 querycommandedactuatorforcetorques_2613 = Proto("querycommandedactuatorforcetorques_2613", "QueryCommandedActuatorForceTorques 0x2613")
 function querycommandedactuatorforcetorques_2613.dissector(buffer, pinfo, tree)
 	-- /home/tiderko/tmp/jsidl_xml/urn.jaus.jss.manipulator/urn_jaus_jss_manipulator_ManipulatorActuatorForceTorqueDriver.xml
