@@ -10,6 +10,10 @@ This package contains no JSIDL files. You can find such files in [JausToolsSet][
 
 ## Install wireshark plugin
 
+copy fkie_iop.lua to $HOME/.local/lib/wireshark/plugins/
+
+## Build wireshark plugin
+
 We use [PyXB-X](https://github.com/renalreg/PyXB-X) to generate python code for XMLSchema of JSIDL. Install dependencies:
 ```bash
 pip install PyXB-X
