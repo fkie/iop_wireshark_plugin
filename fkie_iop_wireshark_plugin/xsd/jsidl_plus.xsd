@@ -10,7 +10,9 @@
   2. Added mxCell element and sub-elements
   3. Updated variable_field to define type_and_units_field inline because defining it separately causes problems in the XSD. 
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:jaus:jsidl:1.1" xmlns:ns1="urn:jaus:jsidl:1.1" xmlns:plus="urn:jaus:jsidl:plus" xmlns:ns0="urn:jaus:jsidl:1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:jaus:jsidl:1.1"
+  xmlns:ns1="urn:jaus:jsidl:1.1"
+  xmlns:plus="urn:jaus:jsidl:plus">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
   <xs:import namespace="urn:jaus:jsidl:plus" schemaLocation="plus.xsd"/>
   <xs:element name="service_def">

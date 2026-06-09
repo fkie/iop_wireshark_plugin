@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>fkie_iop_wireshark_plugin</name>
-  <version>1.0.0</version>
+  <version>2.0.0</version>
   <description>Wireshark dissector for IOP</description>
 
   <author email="lukas.boes@fkie.fraunhofer.de">Lukas Boes</author>

@@ -18,7 +18,7 @@ try:
                schema_dir = 'xsd'
                packages.append(package_name + '.jsidl_pyxb')
                # build directory should exists, create if not
-               xsd_files = 'jsidl_plus_v0.xsd jsidl_plus.xsd'
+               xsd_files = 'jsidl_plus.xsd'
                pyxbgen_exec = 'pyxbgen'
                if sys.version_info[0] < 3:
                   pyxbgen_exec = 'pyxbgen-py'
@@ -37,7 +37,7 @@ try:
       install_requires = ['python-pyxb']
 
    setup(name='fkie_iop_wireshark_plugin',
-         version='1.0.0',
+         version='2.0.0',
          license='MIT',
          description='Wireshark dissector for IOP',
          author='Alexander Tiderko',

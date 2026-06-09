@@ -43,7 +43,7 @@ messagetable = DissectorTable.new("iop.message_id", "IOP Message ID's", ftypes.U
 
 local my_info = 
 {
-    version = "1.0.0",
+    version = "2.0.0",
     author = "Lukas Boes",
 }
 set_plugin_info(my_info)
